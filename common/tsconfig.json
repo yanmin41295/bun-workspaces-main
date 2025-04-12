@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "ESNext"
+    ],
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationDir": "./dist/dts",
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "allowImportingTsExtensions": true,
+    "allowJs": true,
+    "types": [
+      "bun-types"
+      // add Bun global
+    ]
+  }
+}

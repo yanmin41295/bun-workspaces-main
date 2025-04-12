@@ -1,0 +1,7 @@
+[install]
+
+
+# bunfig.toml
+
+[test]
+timeout = 1000000  # 设置全局超时时间为 10 秒
