@@ -179,3 +179,5 @@ packages/backend/drizzle
 *.sqlite
 *.sqlite3
 *.svelte-kit
+backend/database/*
+logs/*

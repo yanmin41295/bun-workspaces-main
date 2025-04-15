@@ -65,11 +65,11 @@ import {log, type TableData, type TableHeader} from "@/components/Notion/table";
 import dayjs from "dayjs";
 import {Random} from "mockjs";
 import {userApi} from "@/api/controller.api";
+import {User} from "@mono/common/src/prisma/interfaces.ts";
 
 async function getUser() {
-  await userApi.findByUserId({userId: "1"}).then(user => {
-    console.log(user)
-  })
+  let user: User = await userApi.findByUserId({userId: "1"})
+  console.log(user)
 }
 
 const {
