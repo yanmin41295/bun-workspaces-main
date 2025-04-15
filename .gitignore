@@ -174,3 +174,8 @@ build/
 bun.lockb
 packages/backend/drizzle
 *.lock
+*.lockfile
+*.db
+*.sqlite
+*.sqlite3
+*.svelte-kit
