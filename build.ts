@@ -1,10 +1,13 @@
 import {$} from 'bun';
+import fse from 'fs-extra';
 
 try {
-    await $`rm -rf ./build`
-    await $`bun build  --compile ./src/app.ts  --target=bun-windows-x64    --outfile ../build/app`.cwd('./backend');
-    await $`vite build --outDir ../build`.cwd('./frontend');
-} catch (e) {
-    console.error(e);
+    fse.removeSync('./build/public');
+    fse.removeSync('./build/app.exe');
+    await $`vite build`.cwd('./preview-pro');
+    fse.copySync('./preview-pro/dist', './build/public');
+    await $`bun build  --compile ./src/app.ts  --target=bun-windows-x64 --outfile ../build/app`.cwd('./backend');
+} catch (e: any) {
+    console.error(JSON.stringify(e));
 }
 

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "dev:force": "vite --force",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vite build",
     "build:ghpages": "vue-tsc --noEmit && vite build --base=/preview-pro/ --mode=ghpages",
     "report": "vite build",
     "preview": "vite preview --port 5050",

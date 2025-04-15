@@ -1,1 +1,0 @@
-export type DataType = 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object' | 'function'

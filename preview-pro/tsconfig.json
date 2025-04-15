@@ -14,7 +14,9 @@
   "files": [],
   "include": [
     "shims-tsx.d.ts",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.vue"
   ],
   "references": [
     {

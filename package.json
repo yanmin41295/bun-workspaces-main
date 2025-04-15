@@ -27,12 +27,13 @@
     "d3-dsv": "^3.0.1",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
-    "drizzle-orm": "^0.38.4",
     "execa": "^9.5.2",
     "fastify": "^5.2.2",
     "frontend": "^2.0.0-alpha.4",
+    "fs-extra": "^11.3.0",
     "lodash": "^4.17.21",
     "pino-roll": "^3.1.0",
+    "prisma-generator-typescript-interfaces": "^2.1.0",
     "sass": "^1.86.0",
     "ts-log": "^2.2.7",
     "vitest": "^3.0.9",
@@ -43,7 +44,7 @@
   "devDependencies": {
     "@types/bun": "^1.2.6",
     "@types/d3-dsv": "^3.0.7",
-    "drizzle-kit": "^0.30.5",
+    "@types/fs-extra": "^11.0.4",
     "tsx": "^4.19.3"
   }
 }

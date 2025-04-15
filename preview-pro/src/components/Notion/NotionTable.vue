@@ -1,6 +1,7 @@
 <template>
   <div>
     <AButton @click="addRow">添加行</AButton>
+    <AButton @click="getUser">getUser</AButton>
     <STable :columns="stateData.columns" :scroll="{ y: 800, x: 2000 }" :data-source="stateData.dataSource"
             :stripe="tableConfig.striped"
             :pagination="false" :column-drag="tableConfig.columnDrag" :custom-cell="customCell"
@@ -63,9 +64,14 @@ import {onBeforeMount, onMounted} from 'vue';
 import {log, type TableData, type TableHeader} from "@/components/Notion/table";
 import dayjs from "dayjs";
 import {Random} from "mockjs";
+import {userApi} from "@/api/controller.api";
 
-import {User} from "@prisma/client";
-const
+async function getUser() {
+  await userApi.findByUserId({userId: "1"}).then(user => {
+    console.log(user)
+  })
+}
+
 const {
   dataSource,
   columns,

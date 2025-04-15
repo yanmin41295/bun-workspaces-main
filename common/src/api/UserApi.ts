@@ -1,10 +1,5 @@
 import {type Api} from "./controller.api.ts";
-
-export interface User {
-    id: number;
-    username: string;
-    email: string;
-}
+import {type User} from "@prisma/client";
 
 
 export abstract class UserApi implements Api<UserApi> {

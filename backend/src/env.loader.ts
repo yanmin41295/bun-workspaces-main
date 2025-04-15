@@ -22,7 +22,7 @@ export async function initEnv(filename: string = 'env.json5'): Promise<ProgramEn
         let json5Text = fs.readFileSync(envFilePath, 'utf8')
         return JSON5.parse(json5Text) as ProgramEnv;
     } else {
-        throw new Error("env file not exist");
+        throw new Error(`env file not exists: ${envFilePath}`);
     }
 }
 
