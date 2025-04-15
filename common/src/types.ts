@@ -1,6 +1,5 @@
 export type CallBack<T, E = any> = (err: E, data: T) => void
 
-
 export interface RouterItem {
     routerId: string;
     name: string;

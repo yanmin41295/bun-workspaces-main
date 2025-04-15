@@ -3,7 +3,12 @@
   "version": "0.0.1",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "prisma:generate": "prisma db push --force-reset && prisma generate"
+  },
   "dependencies": {
-    "bun-types": "latest"
+    "@prisma/client": "^6.6.0",
+    "bun-types": "latest",
+    "prisma": "^6.6.0"
   }
 }

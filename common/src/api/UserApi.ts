@@ -3,7 +3,7 @@ import {type Api} from "./controller.api.ts";
 export interface User {
     id: number;
     username: string;
-    age: number,
+    email: string;
 }
 
 

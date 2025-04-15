@@ -5,12 +5,17 @@
 declare module 'vue' {
   export interface GlobalComponents {
     CountButton: typeof import('./components/CountButton.vue')['default']
+    DataCell: typeof import('./components/Notion/DataCell.tsx')['default']
+    DataView: typeof import('./components/DataComponent/DataView.vue')['default']
     ExcelTable: typeof import('./components/ExcelTable.vue')['default']
+    NameTag: typeof import('./components/DataComponent/NameTag.vue')['default']
     NotionTable: typeof import('./components/Notion/NotionTable.vue')['default']
     RightContent: typeof import('./components/RightContent/RightContent.vue')['default']
     SettingDrawer: typeof import('./components/SettingDrawer/SettingDrawer.vue')['default']
     SortTag: typeof import('./components/Notion/SortTag.vue')['default']
+    StateView: typeof import('./components/DataComponent/StateView.tsx')['default']
     TableConfig: typeof import('./components/TableConfig.vue')['default']
+    TestComponent: typeof import('./components/DataComponent/TestComponent.vue')['default']
     ViewTable: typeof import('./components/ViewTable.vue')['default']
   }
 }

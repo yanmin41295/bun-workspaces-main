@@ -15,7 +15,6 @@ declare module '@fastify/request-context' {
     }
 }
 
-
 export function createLogHandler() {
     if (!fs.existsSync(ProgramEnv.logging.dir)) {
         fs.mkdirSync(ProgramEnv.logging.dir, {recursive: true});
