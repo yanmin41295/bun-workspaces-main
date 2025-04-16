@@ -181,3 +181,4 @@ packages/backend/drizzle
 *.svelte-kit
 backend/database/*
 logs/*
+common/src/prisma/*
