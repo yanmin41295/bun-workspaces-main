@@ -12,13 +12,52 @@ generator client {
   importFileExtension    = "ts"
 }
 
-generator typescriptInterfaces {
-  provider = "prisma-generator-typescript-interfaces"
-  output   = "../../common/src/prisma/interfaces.ts"
+generator gen {
+  provider = "prisma-client-js"
+}
+
+/**
+ * generator typescriptInterfaces {
+ * provider = "prisma-generator-typescript-interfaces"
+ * output   = "../../common/src/prisma/interfaces.ts"
+ * }
+ */
+
+generator classValidator {
+  provider = "prisma-generator-class-validator"
+  output   = "../../common/src/prisma"
+}
+
+model ConfigTable {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique @map("table_name")
+  title       String   @map("table_title")
+  description String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("t_config_table")
+}
+
+model ConfigColumn {
+  id        Int     @id @default(autoincrement())
+  name      String  @map("column_name")
+  title     String  @map("column_title")
+  desc      String  @default("")
+  tableId   Int     @map("table_id")
+  dataType  String  @map("data_type")
+  dataIndex String  @map("data_index")
+  isShow    Boolean @default(true) // 1: 显示 2: 隐藏
+  isEdit    Boolean @default(true) // 1: 编辑 2: 只读
+  order     Int     @default(0)
+
+  @@map("t_config_column")
 }
 
 model User {
   id       Int     @id @default(autoincrement())
   username String
   email    String? @unique
+
+  @@map("t_user")
 }

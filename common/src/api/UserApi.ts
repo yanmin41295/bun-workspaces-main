@@ -1,5 +1,5 @@
 import {type Api} from "./controller.api.ts";
-import {type User} from "@prisma/client";
+import {User} from "@mono/common/src/prisma/models/User.model.ts";
 
 
 export abstract class UserApi implements Api<UserApi> {

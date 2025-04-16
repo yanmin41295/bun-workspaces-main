@@ -15,6 +15,16 @@ export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>
 
 
 /**
+ * Model ConfigTable
+ * 
+ */
+export type ConfigTable = runtime.Types.Result.DefaultSelection<Prisma.$ConfigTablePayload>
+/**
+ * Model ConfigColumn
+ * 
+ */
+export type ConfigColumn = runtime.Types.Result.DefaultSelection<Prisma.$ConfigColumnPayload>
+/**
  * Model User
  * 
  */
@@ -37,10 +47,10 @@ const config: runtime.GetPrismaClientConfig = {
       "fromEnvVar": null
     },
     "config": {
-      "runtime": "nodejs",
-      "importFileExtension": "ts",
       "generatedFileExtension": "ts",
+      "importFileExtension": "ts",
       "moduleFormat": "esm",
+      "runtime": "nodejs",
       "engineType": "library"
     },
     "binaryTargets": [
@@ -70,8 +80,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "datasource db {\n  provider = \"sqlite\"\n  url      = \"file:../database/db.sqlite\"\n}\n\ngenerator client {\n  provider               = \"prisma-client\"\n  output                 = \"../src/prisma\"\n  runtime                = \"nodejs\"\n  moduleFormat           = \"esm\"\n  generatedFileExtension = \"ts\"\n  importFileExtension    = \"ts\"\n}\n\ngenerator typescriptInterfaces {\n  provider = \"prisma-generator-typescript-interfaces\"\n  output   = \"../../common/src/prisma/interfaces.ts\"\n}\n\nmodel User {\n  id       Int     @id @default(autoincrement())\n  username String\n  email    String? @unique\n}\n",
-  "inlineSchemaHash": "5f996879e91f6f72459e6ac5972a66d78b87c93398d82fb97e013e97553717cd",
+  "inlineSchema": "datasource db {\n  provider = \"sqlite\"\n  url      = \"file:../database/db.sqlite\"\n}\n\ngenerator client {\n  provider               = \"prisma-client\"\n  output                 = \"../src/prisma\"\n  runtime                = \"nodejs\"\n  moduleFormat           = \"esm\"\n  generatedFileExtension = \"ts\"\n  importFileExtension    = \"ts\"\n}\n\ngenerator gen {\n  provider = \"prisma-client-js\"\n}\n\n/**\n * generator typescriptInterfaces {\n * provider = \"prisma-generator-typescript-interfaces\"\n * output   = \"../../common/src/prisma/interfaces.ts\"\n * }\n */\n\ngenerator classValidator {\n  provider = \"prisma-generator-class-validator\"\n  output   = \"../../common/src/prisma\"\n}\n\nmodel ConfigTable {\n  id          Int      @id @default(autoincrement())\n  name        String   @unique @map(\"table_name\")\n  title       String   @map(\"table_title\")\n  description String   @default(\"\")\n  createdAt   DateTime @default(now())\n  updatedAt   DateTime @updatedAt\n\n  @@map(\"t_config_table\")\n}\n\nmodel ConfigColumn {\n  id        Int     @id @default(autoincrement())\n  name      String  @map(\"column_name\")\n  title     String  @map(\"column_title\")\n  desc      String  @default(\"\")\n  tableId   Int     @map(\"table_id\")\n  dataType  String  @map(\"data_type\")\n  dataIndex String  @map(\"data_index\")\n  isShow    Boolean @default(true) // 1: 显示 2: 隐藏\n  isEdit    Boolean @default(true) // 1: 编辑 2: 只读\n  order     Int     @default(0)\n\n  @@map(\"t_config_column\")\n}\n\nmodel User {\n  id       Int     @id @default(autoincrement())\n  username String\n  email    String? @unique\n\n  @@map(\"t_user\")\n}\n",
+  "inlineSchemaHash": "6ad3d365a8c7e24aaf6b41f6701601e22296e534254a62384d59d04c662d5037",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
@@ -82,7 +92,7 @@ const config: runtime.GetPrismaClientConfig = {
 }
 config.dirname = __dirname
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"username\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"ConfigTable\":{\"dbName\":\"t_config_table\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"dbName\":\"table_name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"title\",\"dbName\":\"table_title\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"description\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"nativeType\":null,\"default\":\"\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":null,\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":true}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"ConfigColumn\":{\"dbName\":\"t_config_column\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"name\",\"dbName\":\"column_name\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"title\",\"dbName\":\"column_title\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"desc\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"nativeType\":null,\"default\":\"\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tableId\",\"dbName\":\"table_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Int\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"dataType\",\"dbName\":\"data_type\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"dataIndex\",\"dbName\":\"data_index\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"isShow\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"nativeType\":null,\"default\":true,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"isEdit\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"nativeType\":null,\"default\":true,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"order\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":0,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"User\":{\"dbName\":\"t_user\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"username\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
 config.engineWasm = undefined
 config.compilerWasm = undefined
 
@@ -104,8 +114,8 @@ interface PrismaClientConstructor {
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more ConfigTables
+   * const configTables = await prisma.configTable.findMany()
    * ```
    *
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -124,8 +134,8 @@ interface PrismaClientConstructor {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more ConfigTables
+ * const configTables = await prisma.configTable.findMany()
  * ```
  *
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -226,6 +236,26 @@ export interface PrismaClient<
   }>>
 
       /**
+   * `prisma.configTable`: Exposes CRUD operations for the **ConfigTable** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConfigTables
+    * const configTables = await prisma.configTable.findMany()
+    * ```
+    */
+  get configTable(): Prisma.ConfigTableDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.configColumn`: Exposes CRUD operations for the **ConfigColumn** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConfigColumns
+    * const configColumns = await prisma.configColumn.findMany()
+    * ```
+    */
+  get configColumn(): Prisma.ConfigColumnDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -614,6 +644,8 @@ export namespace Prisma {
 
 
   export const ModelName = {
+    ConfigTable: 'ConfigTable',
+    ConfigColumn: 'ConfigColumn',
     User: 'User'
   } as const
 
@@ -633,10 +665,158 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user"
+      modelProps: "configTable" | "configColumn" | "user"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      ConfigTable: {
+        payload: Prisma.$ConfigTablePayload<ExtArgs>
+        fields: Prisma.ConfigTableFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConfigTableFindUniqueArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConfigTableFindUniqueOrThrowArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>
+          }
+          findFirst: {
+            args: Prisma.ConfigTableFindFirstArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConfigTableFindFirstOrThrowArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>
+          }
+          findMany: {
+            args: Prisma.ConfigTableFindManyArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>[]
+          }
+          create: {
+            args: Prisma.ConfigTableCreateArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>
+          }
+          createMany: {
+            args: Prisma.ConfigTableCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConfigTableCreateManyAndReturnArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>[]
+          }
+          delete: {
+            args: Prisma.ConfigTableDeleteArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>
+          }
+          update: {
+            args: Prisma.ConfigTableUpdateArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>
+          }
+          deleteMany: {
+            args: Prisma.ConfigTableDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConfigTableUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConfigTableUpdateManyAndReturnArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>[]
+          }
+          upsert: {
+            args: Prisma.ConfigTableUpsertArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigTablePayload>
+          }
+          aggregate: {
+            args: Prisma.ConfigTableAggregateArgs<ExtArgs>
+            result: runtime.Types.Utils.Optional<AggregateConfigTable>
+          }
+          groupBy: {
+            args: Prisma.ConfigTableGroupByArgs<ExtArgs>
+            result: runtime.Types.Utils.Optional<ConfigTableGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConfigTableCountArgs<ExtArgs>
+            result: runtime.Types.Utils.Optional<ConfigTableCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConfigColumn: {
+        payload: Prisma.$ConfigColumnPayload<ExtArgs>
+        fields: Prisma.ConfigColumnFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConfigColumnFindUniqueArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConfigColumnFindUniqueOrThrowArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>
+          }
+          findFirst: {
+            args: Prisma.ConfigColumnFindFirstArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConfigColumnFindFirstOrThrowArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>
+          }
+          findMany: {
+            args: Prisma.ConfigColumnFindManyArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>[]
+          }
+          create: {
+            args: Prisma.ConfigColumnCreateArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>
+          }
+          createMany: {
+            args: Prisma.ConfigColumnCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConfigColumnCreateManyAndReturnArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>[]
+          }
+          delete: {
+            args: Prisma.ConfigColumnDeleteArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>
+          }
+          update: {
+            args: Prisma.ConfigColumnUpdateArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConfigColumnDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConfigColumnUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConfigColumnUpdateManyAndReturnArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConfigColumnUpsertArgs<ExtArgs>
+            result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfigColumnPayload>
+          }
+          aggregate: {
+            args: Prisma.ConfigColumnAggregateArgs<ExtArgs>
+            result: runtime.Types.Utils.Optional<AggregateConfigColumn>
+          }
+          groupBy: {
+            args: Prisma.ConfigColumnGroupByArgs<ExtArgs>
+            result: runtime.Types.Utils.Optional<ConfigColumnGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConfigColumnCountArgs<ExtArgs>
+            result: runtime.Types.Utils.Optional<ConfigColumnCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -795,6 +975,8 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    configTable?: ConfigTableOmit
+    configColumn?: ConfigColumnOmit
     user?: UserOmit
   }
 
@@ -886,6 +1068,2146 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model ConfigTable
+   */
+
+  export type AggregateConfigTable = {
+    _count: ConfigTableCountAggregateOutputType | null
+    _avg: ConfigTableAvgAggregateOutputType | null
+    _sum: ConfigTableSumAggregateOutputType | null
+    _min: ConfigTableMinAggregateOutputType | null
+    _max: ConfigTableMaxAggregateOutputType | null
+  }
+
+  export type ConfigTableAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ConfigTableSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ConfigTableMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    title: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConfigTableMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    title: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConfigTableCountAggregateOutputType = {
+    id: number
+    name: number
+    title: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ConfigTableAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ConfigTableSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ConfigTableMinAggregateInputType = {
+    id?: true
+    name?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConfigTableMaxAggregateInputType = {
+    id?: true
+    name?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConfigTableCountAggregateInputType = {
+    id?: true
+    name?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ConfigTableAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConfigTable to aggregate.
+     */
+    where?: ConfigTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigTables to fetch.
+     */
+    orderBy?: ConfigTableOrderByWithRelationInput | ConfigTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConfigTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigTables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConfigTables
+    **/
+    _count?: true | ConfigTableCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ConfigTableAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ConfigTableSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConfigTableMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConfigTableMaxAggregateInputType
+  }
+
+  export type GetConfigTableAggregateType<T extends ConfigTableAggregateArgs> = {
+        [P in keyof T & keyof AggregateConfigTable]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConfigTable[P]>
+      : GetScalarType<T[P], AggregateConfigTable[P]>
+  }
+
+
+
+
+  export type ConfigTableGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: ConfigTableWhereInput
+    orderBy?: ConfigTableOrderByWithAggregationInput | ConfigTableOrderByWithAggregationInput[]
+    by: ConfigTableScalarFieldEnum[] | ConfigTableScalarFieldEnum
+    having?: ConfigTableScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConfigTableCountAggregateInputType | true
+    _avg?: ConfigTableAvgAggregateInputType
+    _sum?: ConfigTableSumAggregateInputType
+    _min?: ConfigTableMinAggregateInputType
+    _max?: ConfigTableMaxAggregateInputType
+  }
+
+  export type ConfigTableGroupByOutputType = {
+    id: number
+    name: string
+    title: string
+    description: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ConfigTableCountAggregateOutputType | null
+    _avg: ConfigTableAvgAggregateOutputType | null
+    _sum: ConfigTableSumAggregateOutputType | null
+    _min: ConfigTableMinAggregateOutputType | null
+    _max: ConfigTableMaxAggregateOutputType | null
+  }
+
+  type GetConfigTableGroupByPayload<T extends ConfigTableGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConfigTableGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConfigTableGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConfigTableGroupByOutputType[P]>
+            : GetScalarType<T[P], ConfigTableGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConfigTableSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["configTable"]>
+
+  export type ConfigTableSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["configTable"]>
+
+  export type ConfigTableSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["configTable"]>
+
+  export type ConfigTableSelectScalar = {
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ConfigTableOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "title" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["configTable"]>
+
+  export type $ConfigTablePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "ConfigTable"
+    objects: {}
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      title: string
+      description: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["configTable"]>
+    composites: {}
+  }
+
+  export type ConfigTableGetPayload<S extends boolean | null | undefined | ConfigTableDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload, S>
+
+  export type ConfigTableCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+    Omit<ConfigTableFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConfigTableCountAggregateInputType | true
+    }
+
+  export interface ConfigTableDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConfigTable'], meta: { name: 'ConfigTable' } }
+    /**
+     * Find zero or one ConfigTable that matches the filter.
+     * @param {ConfigTableFindUniqueArgs} args - Arguments to find a ConfigTable
+     * @example
+     * // Get one ConfigTable
+     * const configTable = await prisma.configTable.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConfigTableFindUniqueArgs>(args: SelectSubset<T, ConfigTableFindUniqueArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConfigTable that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConfigTableFindUniqueOrThrowArgs} args - Arguments to find a ConfigTable
+     * @example
+     * // Get one ConfigTable
+     * const configTable = await prisma.configTable.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConfigTableFindUniqueOrThrowArgs>(args: SelectSubset<T, ConfigTableFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConfigTable that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigTableFindFirstArgs} args - Arguments to find a ConfigTable
+     * @example
+     * // Get one ConfigTable
+     * const configTable = await prisma.configTable.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConfigTableFindFirstArgs>(args?: SelectSubset<T, ConfigTableFindFirstArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConfigTable that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigTableFindFirstOrThrowArgs} args - Arguments to find a ConfigTable
+     * @example
+     * // Get one ConfigTable
+     * const configTable = await prisma.configTable.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConfigTableFindFirstOrThrowArgs>(args?: SelectSubset<T, ConfigTableFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConfigTables that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigTableFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConfigTables
+     * const configTables = await prisma.configTable.findMany()
+     * 
+     * // Get first 10 ConfigTables
+     * const configTables = await prisma.configTable.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const configTableWithIdOnly = await prisma.configTable.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConfigTableFindManyArgs>(args?: SelectSubset<T, ConfigTableFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConfigTable.
+     * @param {ConfigTableCreateArgs} args - Arguments to create a ConfigTable.
+     * @example
+     * // Create one ConfigTable
+     * const ConfigTable = await prisma.configTable.create({
+     *   data: {
+     *     // ... data to create a ConfigTable
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConfigTableCreateArgs>(args: SelectSubset<T, ConfigTableCreateArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConfigTables.
+     * @param {ConfigTableCreateManyArgs} args - Arguments to create many ConfigTables.
+     * @example
+     * // Create many ConfigTables
+     * const configTable = await prisma.configTable.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConfigTableCreateManyArgs>(args?: SelectSubset<T, ConfigTableCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConfigTables and returns the data saved in the database.
+     * @param {ConfigTableCreateManyAndReturnArgs} args - Arguments to create many ConfigTables.
+     * @example
+     * // Create many ConfigTables
+     * const configTable = await prisma.configTable.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConfigTables and only return the `id`
+     * const configTableWithIdOnly = await prisma.configTable.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConfigTableCreateManyAndReturnArgs>(args?: SelectSubset<T, ConfigTableCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConfigTable.
+     * @param {ConfigTableDeleteArgs} args - Arguments to delete one ConfigTable.
+     * @example
+     * // Delete one ConfigTable
+     * const ConfigTable = await prisma.configTable.delete({
+     *   where: {
+     *     // ... filter to delete one ConfigTable
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConfigTableDeleteArgs>(args: SelectSubset<T, ConfigTableDeleteArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConfigTable.
+     * @param {ConfigTableUpdateArgs} args - Arguments to update one ConfigTable.
+     * @example
+     * // Update one ConfigTable
+     * const configTable = await prisma.configTable.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConfigTableUpdateArgs>(args: SelectSubset<T, ConfigTableUpdateArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConfigTables.
+     * @param {ConfigTableDeleteManyArgs} args - Arguments to filter ConfigTables to delete.
+     * @example
+     * // Delete a few ConfigTables
+     * const { count } = await prisma.configTable.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConfigTableDeleteManyArgs>(args?: SelectSubset<T, ConfigTableDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConfigTables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigTableUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConfigTables
+     * const configTable = await prisma.configTable.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConfigTableUpdateManyArgs>(args: SelectSubset<T, ConfigTableUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConfigTables and returns the data updated in the database.
+     * @param {ConfigTableUpdateManyAndReturnArgs} args - Arguments to update many ConfigTables.
+     * @example
+     * // Update many ConfigTables
+     * const configTable = await prisma.configTable.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConfigTables and only return the `id`
+     * const configTableWithIdOnly = await prisma.configTable.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConfigTableUpdateManyAndReturnArgs>(args: SelectSubset<T, ConfigTableUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConfigTable.
+     * @param {ConfigTableUpsertArgs} args - Arguments to update or create a ConfigTable.
+     * @example
+     * // Update or create a ConfigTable
+     * const configTable = await prisma.configTable.upsert({
+     *   create: {
+     *     // ... data to create a ConfigTable
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConfigTable we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConfigTableUpsertArgs>(args: SelectSubset<T, ConfigTableUpsertArgs<ExtArgs>>): Prisma__ConfigTableClient<runtime.Types.Result.GetResult<Prisma.$ConfigTablePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConfigTables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigTableCountArgs} args - Arguments to filter ConfigTables to count.
+     * @example
+     * // Count the number of ConfigTables
+     * const count = await prisma.configTable.count({
+     *   where: {
+     *     // ... the filter for the ConfigTables we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConfigTableCountArgs>(
+      args?: Subset<T, ConfigTableCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends runtime.Types.Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConfigTableCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConfigTable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigTableAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConfigTableAggregateArgs>(args: Subset<T, ConfigTableAggregateArgs>): Prisma.PrismaPromise<GetConfigTableAggregateType<T>>
+
+    /**
+     * Group by ConfigTable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigTableGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConfigTableGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConfigTableGroupByArgs['orderBy'] }
+        : { orderBy?: ConfigTableGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConfigTableGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConfigTableGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConfigTable model
+   */
+  readonly fields: ConfigTableFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConfigTable.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConfigTableClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConfigTable model
+   */
+  export interface ConfigTableFieldRefs {
+    readonly id: FieldRef<"ConfigTable", 'Int'>
+    readonly name: FieldRef<"ConfigTable", 'String'>
+    readonly title: FieldRef<"ConfigTable", 'String'>
+    readonly description: FieldRef<"ConfigTable", 'String'>
+    readonly createdAt: FieldRef<"ConfigTable", 'DateTime'>
+    readonly updatedAt: FieldRef<"ConfigTable", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConfigTable findUnique
+   */
+  export type ConfigTableFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigTable to fetch.
+     */
+    where: ConfigTableWhereUniqueInput
+  }
+
+  /**
+   * ConfigTable findUniqueOrThrow
+   */
+  export type ConfigTableFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigTable to fetch.
+     */
+    where: ConfigTableWhereUniqueInput
+  }
+
+  /**
+   * ConfigTable findFirst
+   */
+  export type ConfigTableFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigTable to fetch.
+     */
+    where?: ConfigTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigTables to fetch.
+     */
+    orderBy?: ConfigTableOrderByWithRelationInput | ConfigTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConfigTables.
+     */
+    cursor?: ConfigTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigTables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConfigTables.
+     */
+    distinct?: ConfigTableScalarFieldEnum | ConfigTableScalarFieldEnum[]
+  }
+
+  /**
+   * ConfigTable findFirstOrThrow
+   */
+  export type ConfigTableFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigTable to fetch.
+     */
+    where?: ConfigTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigTables to fetch.
+     */
+    orderBy?: ConfigTableOrderByWithRelationInput | ConfigTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConfigTables.
+     */
+    cursor?: ConfigTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigTables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConfigTables.
+     */
+    distinct?: ConfigTableScalarFieldEnum | ConfigTableScalarFieldEnum[]
+  }
+
+  /**
+   * ConfigTable findMany
+   */
+  export type ConfigTableFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigTables to fetch.
+     */
+    where?: ConfigTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigTables to fetch.
+     */
+    orderBy?: ConfigTableOrderByWithRelationInput | ConfigTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConfigTables.
+     */
+    cursor?: ConfigTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigTables.
+     */
+    skip?: number
+    distinct?: ConfigTableScalarFieldEnum | ConfigTableScalarFieldEnum[]
+  }
+
+  /**
+   * ConfigTable create
+   */
+  export type ConfigTableCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ConfigTable.
+     */
+    data: XOR<ConfigTableCreateInput, ConfigTableUncheckedCreateInput>
+  }
+
+  /**
+   * ConfigTable createMany
+   */
+  export type ConfigTableCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConfigTables.
+     */
+    data: ConfigTableCreateManyInput | ConfigTableCreateManyInput[]
+  }
+
+  /**
+   * ConfigTable createManyAndReturn
+   */
+  export type ConfigTableCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConfigTables.
+     */
+    data: ConfigTableCreateManyInput | ConfigTableCreateManyInput[]
+  }
+
+  /**
+   * ConfigTable update
+   */
+  export type ConfigTableUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ConfigTable.
+     */
+    data: XOR<ConfigTableUpdateInput, ConfigTableUncheckedUpdateInput>
+    /**
+     * Choose, which ConfigTable to update.
+     */
+    where: ConfigTableWhereUniqueInput
+  }
+
+  /**
+   * ConfigTable updateMany
+   */
+  export type ConfigTableUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConfigTables.
+     */
+    data: XOR<ConfigTableUpdateManyMutationInput, ConfigTableUncheckedUpdateManyInput>
+    /**
+     * Filter which ConfigTables to update
+     */
+    where?: ConfigTableWhereInput
+    /**
+     * Limit how many ConfigTables to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfigTable updateManyAndReturn
+   */
+  export type ConfigTableUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * The data used to update ConfigTables.
+     */
+    data: XOR<ConfigTableUpdateManyMutationInput, ConfigTableUncheckedUpdateManyInput>
+    /**
+     * Filter which ConfigTables to update
+     */
+    where?: ConfigTableWhereInput
+    /**
+     * Limit how many ConfigTables to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfigTable upsert
+   */
+  export type ConfigTableUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ConfigTable to update in case it exists.
+     */
+    where: ConfigTableWhereUniqueInput
+    /**
+     * In case the ConfigTable found by the `where` argument doesn't exist, create a new ConfigTable with this data.
+     */
+    create: XOR<ConfigTableCreateInput, ConfigTableUncheckedCreateInput>
+    /**
+     * In case the ConfigTable was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConfigTableUpdateInput, ConfigTableUncheckedUpdateInput>
+  }
+
+  /**
+   * ConfigTable delete
+   */
+  export type ConfigTableDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+    /**
+     * Filter which ConfigTable to delete.
+     */
+    where: ConfigTableWhereUniqueInput
+  }
+
+  /**
+   * ConfigTable deleteMany
+   */
+  export type ConfigTableDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConfigTables to delete
+     */
+    where?: ConfigTableWhereInput
+    /**
+     * Limit how many ConfigTables to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfigTable without action
+   */
+  export type ConfigTableDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigTable
+     */
+    select?: ConfigTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigTable
+     */
+    omit?: ConfigTableOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ConfigColumn
+   */
+
+  export type AggregateConfigColumn = {
+    _count: ConfigColumnCountAggregateOutputType | null
+    _avg: ConfigColumnAvgAggregateOutputType | null
+    _sum: ConfigColumnSumAggregateOutputType | null
+    _min: ConfigColumnMinAggregateOutputType | null
+    _max: ConfigColumnMaxAggregateOutputType | null
+  }
+
+  export type ConfigColumnAvgAggregateOutputType = {
+    id: number | null
+    tableId: number | null
+    order: number | null
+  }
+
+  export type ConfigColumnSumAggregateOutputType = {
+    id: number | null
+    tableId: number | null
+    order: number | null
+  }
+
+  export type ConfigColumnMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    title: string | null
+    desc: string | null
+    tableId: number | null
+    dataType: string | null
+    dataIndex: string | null
+    isShow: boolean | null
+    isEdit: boolean | null
+    order: number | null
+  }
+
+  export type ConfigColumnMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    title: string | null
+    desc: string | null
+    tableId: number | null
+    dataType: string | null
+    dataIndex: string | null
+    isShow: boolean | null
+    isEdit: boolean | null
+    order: number | null
+  }
+
+  export type ConfigColumnCountAggregateOutputType = {
+    id: number
+    name: number
+    title: number
+    desc: number
+    tableId: number
+    dataType: number
+    dataIndex: number
+    isShow: number
+    isEdit: number
+    order: number
+    _all: number
+  }
+
+
+  export type ConfigColumnAvgAggregateInputType = {
+    id?: true
+    tableId?: true
+    order?: true
+  }
+
+  export type ConfigColumnSumAggregateInputType = {
+    id?: true
+    tableId?: true
+    order?: true
+  }
+
+  export type ConfigColumnMinAggregateInputType = {
+    id?: true
+    name?: true
+    title?: true
+    desc?: true
+    tableId?: true
+    dataType?: true
+    dataIndex?: true
+    isShow?: true
+    isEdit?: true
+    order?: true
+  }
+
+  export type ConfigColumnMaxAggregateInputType = {
+    id?: true
+    name?: true
+    title?: true
+    desc?: true
+    tableId?: true
+    dataType?: true
+    dataIndex?: true
+    isShow?: true
+    isEdit?: true
+    order?: true
+  }
+
+  export type ConfigColumnCountAggregateInputType = {
+    id?: true
+    name?: true
+    title?: true
+    desc?: true
+    tableId?: true
+    dataType?: true
+    dataIndex?: true
+    isShow?: true
+    isEdit?: true
+    order?: true
+    _all?: true
+  }
+
+  export type ConfigColumnAggregateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConfigColumn to aggregate.
+     */
+    where?: ConfigColumnWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigColumns to fetch.
+     */
+    orderBy?: ConfigColumnOrderByWithRelationInput | ConfigColumnOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConfigColumnWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigColumns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigColumns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConfigColumns
+    **/
+    _count?: true | ConfigColumnCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ConfigColumnAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ConfigColumnSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConfigColumnMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConfigColumnMaxAggregateInputType
+  }
+
+  export type GetConfigColumnAggregateType<T extends ConfigColumnAggregateArgs> = {
+        [P in keyof T & keyof AggregateConfigColumn]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConfigColumn[P]>
+      : GetScalarType<T[P], AggregateConfigColumn[P]>
+  }
+
+
+
+
+  export type ConfigColumnGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    where?: ConfigColumnWhereInput
+    orderBy?: ConfigColumnOrderByWithAggregationInput | ConfigColumnOrderByWithAggregationInput[]
+    by: ConfigColumnScalarFieldEnum[] | ConfigColumnScalarFieldEnum
+    having?: ConfigColumnScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConfigColumnCountAggregateInputType | true
+    _avg?: ConfigColumnAvgAggregateInputType
+    _sum?: ConfigColumnSumAggregateInputType
+    _min?: ConfigColumnMinAggregateInputType
+    _max?: ConfigColumnMaxAggregateInputType
+  }
+
+  export type ConfigColumnGroupByOutputType = {
+    id: number
+    name: string
+    title: string
+    desc: string
+    tableId: number
+    dataType: string
+    dataIndex: string
+    isShow: boolean
+    isEdit: boolean
+    order: number
+    _count: ConfigColumnCountAggregateOutputType | null
+    _avg: ConfigColumnAvgAggregateOutputType | null
+    _sum: ConfigColumnSumAggregateOutputType | null
+    _min: ConfigColumnMinAggregateOutputType | null
+    _max: ConfigColumnMaxAggregateOutputType | null
+  }
+
+  type GetConfigColumnGroupByPayload<T extends ConfigColumnGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConfigColumnGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConfigColumnGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConfigColumnGroupByOutputType[P]>
+            : GetScalarType<T[P], ConfigColumnGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConfigColumnSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    desc?: boolean
+    tableId?: boolean
+    dataType?: boolean
+    dataIndex?: boolean
+    isShow?: boolean
+    isEdit?: boolean
+    order?: boolean
+  }, ExtArgs["result"]["configColumn"]>
+
+  export type ConfigColumnSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    desc?: boolean
+    tableId?: boolean
+    dataType?: boolean
+    dataIndex?: boolean
+    isShow?: boolean
+    isEdit?: boolean
+    order?: boolean
+  }, ExtArgs["result"]["configColumn"]>
+
+  export type ConfigColumnSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    desc?: boolean
+    tableId?: boolean
+    dataType?: boolean
+    dataIndex?: boolean
+    isShow?: boolean
+    isEdit?: boolean
+    order?: boolean
+  }, ExtArgs["result"]["configColumn"]>
+
+  export type ConfigColumnSelectScalar = {
+    id?: boolean
+    name?: boolean
+    title?: boolean
+    desc?: boolean
+    tableId?: boolean
+    dataType?: boolean
+    dataIndex?: boolean
+    isShow?: boolean
+    isEdit?: boolean
+    order?: boolean
+  }
+
+  export type ConfigColumnOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "title" | "desc" | "tableId" | "dataType" | "dataIndex" | "isShow" | "isEdit" | "order", ExtArgs["result"]["configColumn"]>
+
+  export type $ConfigColumnPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    name: "ConfigColumn"
+    objects: {}
+    scalars: runtime.Types.Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      title: string
+      desc: string
+      tableId: number
+      dataType: string
+      dataIndex: string
+      isShow: boolean
+      isEdit: boolean
+      order: number
+    }, ExtArgs["result"]["configColumn"]>
+    composites: {}
+  }
+
+  export type ConfigColumnGetPayload<S extends boolean | null | undefined | ConfigColumnDefaultArgs> = runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload, S>
+
+  export type ConfigColumnCountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> =
+    Omit<ConfigColumnFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConfigColumnCountAggregateInputType | true
+    }
+
+  export interface ConfigColumnDelegate<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConfigColumn'], meta: { name: 'ConfigColumn' } }
+    /**
+     * Find zero or one ConfigColumn that matches the filter.
+     * @param {ConfigColumnFindUniqueArgs} args - Arguments to find a ConfigColumn
+     * @example
+     * // Get one ConfigColumn
+     * const configColumn = await prisma.configColumn.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConfigColumnFindUniqueArgs>(args: SelectSubset<T, ConfigColumnFindUniqueArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConfigColumn that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConfigColumnFindUniqueOrThrowArgs} args - Arguments to find a ConfigColumn
+     * @example
+     * // Get one ConfigColumn
+     * const configColumn = await prisma.configColumn.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConfigColumnFindUniqueOrThrowArgs>(args: SelectSubset<T, ConfigColumnFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConfigColumn that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigColumnFindFirstArgs} args - Arguments to find a ConfigColumn
+     * @example
+     * // Get one ConfigColumn
+     * const configColumn = await prisma.configColumn.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConfigColumnFindFirstArgs>(args?: SelectSubset<T, ConfigColumnFindFirstArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConfigColumn that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigColumnFindFirstOrThrowArgs} args - Arguments to find a ConfigColumn
+     * @example
+     * // Get one ConfigColumn
+     * const configColumn = await prisma.configColumn.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConfigColumnFindFirstOrThrowArgs>(args?: SelectSubset<T, ConfigColumnFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConfigColumns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigColumnFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConfigColumns
+     * const configColumns = await prisma.configColumn.findMany()
+     * 
+     * // Get first 10 ConfigColumns
+     * const configColumns = await prisma.configColumn.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const configColumnWithIdOnly = await prisma.configColumn.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConfigColumnFindManyArgs>(args?: SelectSubset<T, ConfigColumnFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConfigColumn.
+     * @param {ConfigColumnCreateArgs} args - Arguments to create a ConfigColumn.
+     * @example
+     * // Create one ConfigColumn
+     * const ConfigColumn = await prisma.configColumn.create({
+     *   data: {
+     *     // ... data to create a ConfigColumn
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConfigColumnCreateArgs>(args: SelectSubset<T, ConfigColumnCreateArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConfigColumns.
+     * @param {ConfigColumnCreateManyArgs} args - Arguments to create many ConfigColumns.
+     * @example
+     * // Create many ConfigColumns
+     * const configColumn = await prisma.configColumn.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConfigColumnCreateManyArgs>(args?: SelectSubset<T, ConfigColumnCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConfigColumns and returns the data saved in the database.
+     * @param {ConfigColumnCreateManyAndReturnArgs} args - Arguments to create many ConfigColumns.
+     * @example
+     * // Create many ConfigColumns
+     * const configColumn = await prisma.configColumn.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConfigColumns and only return the `id`
+     * const configColumnWithIdOnly = await prisma.configColumn.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConfigColumnCreateManyAndReturnArgs>(args?: SelectSubset<T, ConfigColumnCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConfigColumn.
+     * @param {ConfigColumnDeleteArgs} args - Arguments to delete one ConfigColumn.
+     * @example
+     * // Delete one ConfigColumn
+     * const ConfigColumn = await prisma.configColumn.delete({
+     *   where: {
+     *     // ... filter to delete one ConfigColumn
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConfigColumnDeleteArgs>(args: SelectSubset<T, ConfigColumnDeleteArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConfigColumn.
+     * @param {ConfigColumnUpdateArgs} args - Arguments to update one ConfigColumn.
+     * @example
+     * // Update one ConfigColumn
+     * const configColumn = await prisma.configColumn.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConfigColumnUpdateArgs>(args: SelectSubset<T, ConfigColumnUpdateArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConfigColumns.
+     * @param {ConfigColumnDeleteManyArgs} args - Arguments to filter ConfigColumns to delete.
+     * @example
+     * // Delete a few ConfigColumns
+     * const { count } = await prisma.configColumn.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConfigColumnDeleteManyArgs>(args?: SelectSubset<T, ConfigColumnDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConfigColumns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigColumnUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConfigColumns
+     * const configColumn = await prisma.configColumn.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConfigColumnUpdateManyArgs>(args: SelectSubset<T, ConfigColumnUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConfigColumns and returns the data updated in the database.
+     * @param {ConfigColumnUpdateManyAndReturnArgs} args - Arguments to update many ConfigColumns.
+     * @example
+     * // Update many ConfigColumns
+     * const configColumn = await prisma.configColumn.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConfigColumns and only return the `id`
+     * const configColumnWithIdOnly = await prisma.configColumn.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConfigColumnUpdateManyAndReturnArgs>(args: SelectSubset<T, ConfigColumnUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConfigColumn.
+     * @param {ConfigColumnUpsertArgs} args - Arguments to update or create a ConfigColumn.
+     * @example
+     * // Update or create a ConfigColumn
+     * const configColumn = await prisma.configColumn.upsert({
+     *   create: {
+     *     // ... data to create a ConfigColumn
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConfigColumn we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConfigColumnUpsertArgs>(args: SelectSubset<T, ConfigColumnUpsertArgs<ExtArgs>>): Prisma__ConfigColumnClient<runtime.Types.Result.GetResult<Prisma.$ConfigColumnPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConfigColumns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigColumnCountArgs} args - Arguments to filter ConfigColumns to count.
+     * @example
+     * // Count the number of ConfigColumns
+     * const count = await prisma.configColumn.count({
+     *   where: {
+     *     // ... the filter for the ConfigColumns we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConfigColumnCountArgs>(
+      args?: Subset<T, ConfigColumnCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends runtime.Types.Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConfigColumnCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConfigColumn.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigColumnAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConfigColumnAggregateArgs>(args: Subset<T, ConfigColumnAggregateArgs>): Prisma.PrismaPromise<GetConfigColumnAggregateType<T>>
+
+    /**
+     * Group by ConfigColumn.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfigColumnGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConfigColumnGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConfigColumnGroupByArgs['orderBy'] }
+        : { orderBy?: ConfigColumnGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConfigColumnGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConfigColumnGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConfigColumn model
+   */
+  readonly fields: ConfigColumnFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConfigColumn.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConfigColumnClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): runtime.Types.Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): runtime.Types.Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): runtime.Types.Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConfigColumn model
+   */
+  export interface ConfigColumnFieldRefs {
+    readonly id: FieldRef<"ConfigColumn", 'Int'>
+    readonly name: FieldRef<"ConfigColumn", 'String'>
+    readonly title: FieldRef<"ConfigColumn", 'String'>
+    readonly desc: FieldRef<"ConfigColumn", 'String'>
+    readonly tableId: FieldRef<"ConfigColumn", 'Int'>
+    readonly dataType: FieldRef<"ConfigColumn", 'String'>
+    readonly dataIndex: FieldRef<"ConfigColumn", 'String'>
+    readonly isShow: FieldRef<"ConfigColumn", 'Boolean'>
+    readonly isEdit: FieldRef<"ConfigColumn", 'Boolean'>
+    readonly order: FieldRef<"ConfigColumn", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConfigColumn findUnique
+   */
+  export type ConfigColumnFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigColumn to fetch.
+     */
+    where: ConfigColumnWhereUniqueInput
+  }
+
+  /**
+   * ConfigColumn findUniqueOrThrow
+   */
+  export type ConfigColumnFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigColumn to fetch.
+     */
+    where: ConfigColumnWhereUniqueInput
+  }
+
+  /**
+   * ConfigColumn findFirst
+   */
+  export type ConfigColumnFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigColumn to fetch.
+     */
+    where?: ConfigColumnWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigColumns to fetch.
+     */
+    orderBy?: ConfigColumnOrderByWithRelationInput | ConfigColumnOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConfigColumns.
+     */
+    cursor?: ConfigColumnWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigColumns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigColumns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConfigColumns.
+     */
+    distinct?: ConfigColumnScalarFieldEnum | ConfigColumnScalarFieldEnum[]
+  }
+
+  /**
+   * ConfigColumn findFirstOrThrow
+   */
+  export type ConfigColumnFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigColumn to fetch.
+     */
+    where?: ConfigColumnWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigColumns to fetch.
+     */
+    orderBy?: ConfigColumnOrderByWithRelationInput | ConfigColumnOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConfigColumns.
+     */
+    cursor?: ConfigColumnWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigColumns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigColumns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConfigColumns.
+     */
+    distinct?: ConfigColumnScalarFieldEnum | ConfigColumnScalarFieldEnum[]
+  }
+
+  /**
+   * ConfigColumn findMany
+   */
+  export type ConfigColumnFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * Filter, which ConfigColumns to fetch.
+     */
+    where?: ConfigColumnWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfigColumns to fetch.
+     */
+    orderBy?: ConfigColumnOrderByWithRelationInput | ConfigColumnOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConfigColumns.
+     */
+    cursor?: ConfigColumnWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfigColumns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfigColumns.
+     */
+    skip?: number
+    distinct?: ConfigColumnScalarFieldEnum | ConfigColumnScalarFieldEnum[]
+  }
+
+  /**
+   * ConfigColumn create
+   */
+  export type ConfigColumnCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ConfigColumn.
+     */
+    data: XOR<ConfigColumnCreateInput, ConfigColumnUncheckedCreateInput>
+  }
+
+  /**
+   * ConfigColumn createMany
+   */
+  export type ConfigColumnCreateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConfigColumns.
+     */
+    data: ConfigColumnCreateManyInput | ConfigColumnCreateManyInput[]
+  }
+
+  /**
+   * ConfigColumn createManyAndReturn
+   */
+  export type ConfigColumnCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConfigColumns.
+     */
+    data: ConfigColumnCreateManyInput | ConfigColumnCreateManyInput[]
+  }
+
+  /**
+   * ConfigColumn update
+   */
+  export type ConfigColumnUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ConfigColumn.
+     */
+    data: XOR<ConfigColumnUpdateInput, ConfigColumnUncheckedUpdateInput>
+    /**
+     * Choose, which ConfigColumn to update.
+     */
+    where: ConfigColumnWhereUniqueInput
+  }
+
+  /**
+   * ConfigColumn updateMany
+   */
+  export type ConfigColumnUpdateManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConfigColumns.
+     */
+    data: XOR<ConfigColumnUpdateManyMutationInput, ConfigColumnUncheckedUpdateManyInput>
+    /**
+     * Filter which ConfigColumns to update
+     */
+    where?: ConfigColumnWhereInput
+    /**
+     * Limit how many ConfigColumns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfigColumn updateManyAndReturn
+   */
+  export type ConfigColumnUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * The data used to update ConfigColumns.
+     */
+    data: XOR<ConfigColumnUpdateManyMutationInput, ConfigColumnUncheckedUpdateManyInput>
+    /**
+     * Filter which ConfigColumns to update
+     */
+    where?: ConfigColumnWhereInput
+    /**
+     * Limit how many ConfigColumns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfigColumn upsert
+   */
+  export type ConfigColumnUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ConfigColumn to update in case it exists.
+     */
+    where: ConfigColumnWhereUniqueInput
+    /**
+     * In case the ConfigColumn found by the `where` argument doesn't exist, create a new ConfigColumn with this data.
+     */
+    create: XOR<ConfigColumnCreateInput, ConfigColumnUncheckedCreateInput>
+    /**
+     * In case the ConfigColumn was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConfigColumnUpdateInput, ConfigColumnUncheckedUpdateInput>
+  }
+
+  /**
+   * ConfigColumn delete
+   */
+  export type ConfigColumnDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+    /**
+     * Filter which ConfigColumn to delete.
+     */
+    where: ConfigColumnWhereUniqueInput
+  }
+
+  /**
+   * ConfigColumn deleteMany
+   */
+  export type ConfigColumnDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConfigColumns to delete
+     */
+    where?: ConfigColumnWhereInput
+    /**
+     * Limit how many ConfigColumns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfigColumn without action
+   */
+  export type ConfigColumnDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfigColumn
+     */
+    select?: ConfigColumnSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfigColumn
+     */
+    omit?: ConfigColumnOmit<ExtArgs> | null
+  }
+
 
   /**
    * Model User
@@ -1899,6 +4221,34 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const ConfigTableScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    title: 'title',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  } as const
+
+  export type ConfigTableScalarFieldEnum = (typeof ConfigTableScalarFieldEnum)[keyof typeof ConfigTableScalarFieldEnum]
+
+
+  export const ConfigColumnScalarFieldEnum = {
+    id: 'id',
+    name: 'name',
+    title: 'title',
+    desc: 'desc',
+    tableId: 'tableId',
+    dataType: 'dataType',
+    dataIndex: 'dataIndex',
+    isShow: 'isShow',
+    isEdit: 'isEdit',
+    order: 'order'
+  } as const
+
+  export type ConfigColumnScalarFieldEnum = (typeof ConfigColumnScalarFieldEnum)[keyof typeof ConfigColumnScalarFieldEnum]
+
+
   export const UserScalarFieldEnum = {
     id: 'id',
     username: 'username',
@@ -1944,6 +4294,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'DateTime'
+   */
+  export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1952,6 +4316,144 @@ export namespace Prisma {
    * Deep Input Types
    */
 
+
+  export type ConfigTableWhereInput = {
+    AND?: ConfigTableWhereInput | ConfigTableWhereInput[]
+    OR?: ConfigTableWhereInput[]
+    NOT?: ConfigTableWhereInput | ConfigTableWhereInput[]
+    id?: IntFilter<"ConfigTable"> | number
+    name?: StringFilter<"ConfigTable"> | string
+    title?: StringFilter<"ConfigTable"> | string
+    description?: StringFilter<"ConfigTable"> | string
+    createdAt?: DateTimeFilter<"ConfigTable"> | Date | string
+    updatedAt?: DateTimeFilter<"ConfigTable"> | Date | string
+  }
+
+  export type ConfigTableOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConfigTableWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    name?: string
+    AND?: ConfigTableWhereInput | ConfigTableWhereInput[]
+    OR?: ConfigTableWhereInput[]
+    NOT?: ConfigTableWhereInput | ConfigTableWhereInput[]
+    title?: StringFilter<"ConfigTable"> | string
+    description?: StringFilter<"ConfigTable"> | string
+    createdAt?: DateTimeFilter<"ConfigTable"> | Date | string
+    updatedAt?: DateTimeFilter<"ConfigTable"> | Date | string
+  }, "id" | "name">
+
+  export type ConfigTableOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ConfigTableCountOrderByAggregateInput
+    _avg?: ConfigTableAvgOrderByAggregateInput
+    _max?: ConfigTableMaxOrderByAggregateInput
+    _min?: ConfigTableMinOrderByAggregateInput
+    _sum?: ConfigTableSumOrderByAggregateInput
+  }
+
+  export type ConfigTableScalarWhereWithAggregatesInput = {
+    AND?: ConfigTableScalarWhereWithAggregatesInput | ConfigTableScalarWhereWithAggregatesInput[]
+    OR?: ConfigTableScalarWhereWithAggregatesInput[]
+    NOT?: ConfigTableScalarWhereWithAggregatesInput | ConfigTableScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ConfigTable"> | number
+    name?: StringWithAggregatesFilter<"ConfigTable"> | string
+    title?: StringWithAggregatesFilter<"ConfigTable"> | string
+    description?: StringWithAggregatesFilter<"ConfigTable"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ConfigTable"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ConfigTable"> | Date | string
+  }
+
+  export type ConfigColumnWhereInput = {
+    AND?: ConfigColumnWhereInput | ConfigColumnWhereInput[]
+    OR?: ConfigColumnWhereInput[]
+    NOT?: ConfigColumnWhereInput | ConfigColumnWhereInput[]
+    id?: IntFilter<"ConfigColumn"> | number
+    name?: StringFilter<"ConfigColumn"> | string
+    title?: StringFilter<"ConfigColumn"> | string
+    desc?: StringFilter<"ConfigColumn"> | string
+    tableId?: IntFilter<"ConfigColumn"> | number
+    dataType?: StringFilter<"ConfigColumn"> | string
+    dataIndex?: StringFilter<"ConfigColumn"> | string
+    isShow?: BoolFilter<"ConfigColumn"> | boolean
+    isEdit?: BoolFilter<"ConfigColumn"> | boolean
+    order?: IntFilter<"ConfigColumn"> | number
+  }
+
+  export type ConfigColumnOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    desc?: SortOrder
+    tableId?: SortOrder
+    dataType?: SortOrder
+    dataIndex?: SortOrder
+    isShow?: SortOrder
+    isEdit?: SortOrder
+    order?: SortOrder
+  }
+
+  export type ConfigColumnWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ConfigColumnWhereInput | ConfigColumnWhereInput[]
+    OR?: ConfigColumnWhereInput[]
+    NOT?: ConfigColumnWhereInput | ConfigColumnWhereInput[]
+    name?: StringFilter<"ConfigColumn"> | string
+    title?: StringFilter<"ConfigColumn"> | string
+    desc?: StringFilter<"ConfigColumn"> | string
+    tableId?: IntFilter<"ConfigColumn"> | number
+    dataType?: StringFilter<"ConfigColumn"> | string
+    dataIndex?: StringFilter<"ConfigColumn"> | string
+    isShow?: BoolFilter<"ConfigColumn"> | boolean
+    isEdit?: BoolFilter<"ConfigColumn"> | boolean
+    order?: IntFilter<"ConfigColumn"> | number
+  }, "id">
+
+  export type ConfigColumnOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    desc?: SortOrder
+    tableId?: SortOrder
+    dataType?: SortOrder
+    dataIndex?: SortOrder
+    isShow?: SortOrder
+    isEdit?: SortOrder
+    order?: SortOrder
+    _count?: ConfigColumnCountOrderByAggregateInput
+    _avg?: ConfigColumnAvgOrderByAggregateInput
+    _max?: ConfigColumnMaxOrderByAggregateInput
+    _min?: ConfigColumnMinOrderByAggregateInput
+    _sum?: ConfigColumnSumOrderByAggregateInput
+  }
+
+  export type ConfigColumnScalarWhereWithAggregatesInput = {
+    AND?: ConfigColumnScalarWhereWithAggregatesInput | ConfigColumnScalarWhereWithAggregatesInput[]
+    OR?: ConfigColumnScalarWhereWithAggregatesInput[]
+    NOT?: ConfigColumnScalarWhereWithAggregatesInput | ConfigColumnScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ConfigColumn"> | number
+    name?: StringWithAggregatesFilter<"ConfigColumn"> | string
+    title?: StringWithAggregatesFilter<"ConfigColumn"> | string
+    desc?: StringWithAggregatesFilter<"ConfigColumn"> | string
+    tableId?: IntWithAggregatesFilter<"ConfigColumn"> | number
+    dataType?: StringWithAggregatesFilter<"ConfigColumn"> | string
+    dataIndex?: StringWithAggregatesFilter<"ConfigColumn"> | string
+    isShow?: BoolWithAggregatesFilter<"ConfigColumn"> | boolean
+    isEdit?: BoolWithAggregatesFilter<"ConfigColumn"> | boolean
+    order?: IntWithAggregatesFilter<"ConfigColumn"> | number
+  }
 
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
@@ -1995,6 +4497,154 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"User"> | number
     username?: StringWithAggregatesFilter<"User"> | string
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
+  }
+
+  export type ConfigTableCreateInput = {
+    name: string
+    title: string
+    description?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConfigTableUncheckedCreateInput = {
+    id?: number
+    name: string
+    title: string
+    description?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConfigTableUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConfigTableUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConfigTableCreateManyInput = {
+    id?: number
+    name: string
+    title: string
+    description?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConfigTableUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConfigTableUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConfigColumnCreateInput = {
+    name: string
+    title: string
+    desc?: string
+    tableId: number
+    dataType: string
+    dataIndex: string
+    isShow?: boolean
+    isEdit?: boolean
+    order?: number
+  }
+
+  export type ConfigColumnUncheckedCreateInput = {
+    id?: number
+    name: string
+    title: string
+    desc?: string
+    tableId: number
+    dataType: string
+    dataIndex: string
+    isShow?: boolean
+    isEdit?: boolean
+    order?: number
+  }
+
+  export type ConfigColumnUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    desc?: StringFieldUpdateOperationsInput | string
+    tableId?: IntFieldUpdateOperationsInput | number
+    dataType?: StringFieldUpdateOperationsInput | string
+    dataIndex?: StringFieldUpdateOperationsInput | string
+    isShow?: BoolFieldUpdateOperationsInput | boolean
+    isEdit?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConfigColumnUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    desc?: StringFieldUpdateOperationsInput | string
+    tableId?: IntFieldUpdateOperationsInput | number
+    dataType?: StringFieldUpdateOperationsInput | string
+    dataIndex?: StringFieldUpdateOperationsInput | string
+    isShow?: BoolFieldUpdateOperationsInput | boolean
+    isEdit?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConfigColumnCreateManyInput = {
+    id?: number
+    name: string
+    title: string
+    desc?: string
+    tableId: number
+    dataType: string
+    dataIndex: string
+    isShow?: boolean
+    isEdit?: boolean
+    order?: number
+  }
+
+  export type ConfigColumnUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    desc?: StringFieldUpdateOperationsInput | string
+    tableId?: IntFieldUpdateOperationsInput | number
+    dataType?: StringFieldUpdateOperationsInput | string
+    dataIndex?: StringFieldUpdateOperationsInput | string
+    isShow?: BoolFieldUpdateOperationsInput | boolean
+    isEdit?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConfigColumnUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    desc?: StringFieldUpdateOperationsInput | string
+    tableId?: IntFieldUpdateOperationsInput | number
+    dataType?: StringFieldUpdateOperationsInput | string
+    dataIndex?: StringFieldUpdateOperationsInput | string
+    isShow?: BoolFieldUpdateOperationsInput | boolean
+    isEdit?: BoolFieldUpdateOperationsInput | boolean
+    order?: IntFieldUpdateOperationsInput | number
   }
 
   export type UserCreateInput = {
@@ -2061,6 +4711,163 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type ConfigTableCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConfigTableAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ConfigTableMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConfigTableMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConfigTableSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type ConfigColumnCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    desc?: SortOrder
+    tableId?: SortOrder
+    dataType?: SortOrder
+    dataIndex?: SortOrder
+    isShow?: SortOrder
+    isEdit?: SortOrder
+    order?: SortOrder
+  }
+
+  export type ConfigColumnAvgOrderByAggregateInput = {
+    id?: SortOrder
+    tableId?: SortOrder
+    order?: SortOrder
+  }
+
+  export type ConfigColumnMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    desc?: SortOrder
+    tableId?: SortOrder
+    dataType?: SortOrder
+    dataIndex?: SortOrder
+    isShow?: SortOrder
+    isEdit?: SortOrder
+    order?: SortOrder
+  }
+
+  export type ConfigColumnMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    title?: SortOrder
+    desc?: SortOrder
+    tableId?: SortOrder
+    dataType?: SortOrder
+    dataIndex?: SortOrder
+    isShow?: SortOrder
+    isEdit?: SortOrder
+    order?: SortOrder
+  }
+
+  export type ConfigColumnSumOrderByAggregateInput = {
+    id?: SortOrder
+    tableId?: SortOrder
+    order?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -2106,39 +4913,6 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[]
-    notIn?: string[]
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | null
@@ -2160,8 +4934,8 @@ export namespace Prisma {
     set?: string
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -2170,6 +4944,14 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -2197,18 +4979,15 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | null
-    notIn?: string[] | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -2253,6 +5032,47 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {

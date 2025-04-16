@@ -1,6 +1,6 @@
 import {UserApi} from "@mono/common/src/api/UserApi.ts";
-import {User} from "@mono/common/src/prisma/interfaces.ts";
-import {PrismaClient} from "@prisma/client";
+import {User} from "@mono/common/src/prisma/models/User.model.ts";
+import {PrismaClient} from "../prisma/client.ts";
 import * as path from "node:path";
 import {LOGGER} from "../server.ts";
 

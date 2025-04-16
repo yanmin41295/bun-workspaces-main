@@ -7,8 +7,6 @@
 
   },
   "dependencies": {
-    "@prisma/client": "^6.6.0",
-    "bun-types": "latest",
-    "prisma": "^6.6.0"
+    "bun-types": "latest"
   }
 }
