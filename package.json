@@ -4,14 +4,13 @@
   "module": "index.ts",
   "type": "module",
   "workspaces": [
-    "backend",
-    "common",
-    "preview-pro"
+    "packages/backend",
+    "packages/common",
+    "packages/preview-pro"
   ],
   "scripts": {
     "build": "bun build.ts",
     "clean:all": "rm -rf node_modules packages/backend/node_modules packages/common/node_modules bun.lockb packages/backend/bun.lockb packages/common/bun.lockb",
-    "debug": "bun index.ts",
     "update:common": "rimraf node_modules/@mono/common && bun install"
   },
   "dependencies": {
