@@ -23,6 +23,7 @@ export function createLogHandler() {
     const logFileStream = fs.createWriteStream(path.join(logDir, ProgramEnv?.logging?.filename ?? 'app.log'), {flags: 'a'});
     return {
         stream: pino.multistream([{stream: process.stdout}, {stream: logFileStream}]),
+        level: ProgramEnv?.logging?.level ?? 'info',
         redact: ['req.headers.authorization'], // 移除敏感信息
         serializers: {
             req(request: FastifyRequest) {

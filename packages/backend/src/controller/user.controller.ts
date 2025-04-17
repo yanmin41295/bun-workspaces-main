@@ -3,11 +3,12 @@ import {User} from "@mono/common/src/prisma/models/User.model.ts";
 import {PrismaClient} from "../prisma/client.ts";
 import * as path from "node:path";
 import {LOGGER} from "../server.ts";
+import ProgramEnv from "../env.loader.js";
 
-const dbFile = path.join(process.cwd(), "./database/db.sqlite");
+const dbFile = ProgramEnv?.database?.url ?? path.join(process.cwd(), "file:./database/db.sqlite");
 
 const prisma = new PrismaClient({
-    datasourceUrl: `file:${dbFile}`,
+    datasourceUrl: `${dbFile}`,
 })
 
 export class UserController extends UserApi {

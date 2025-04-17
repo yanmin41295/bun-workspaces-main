@@ -21,15 +21,14 @@ export interface MenuItem extends MenuMeta {
     children: MenuItem[]
 }
 
-
 export interface WsMsgData<T = any> {
     header: {
         messageId: string;
         taskId: string;
-        step: number;
-        controller: string;
-        function: string;
-        code: 'success' | 'error' | 'fail';
+        interactId: number;
+        action: string;
+        type: 'request' | 'response';
+        code: 'success' | 'error' | 'fail' | 'init' | 'partial' | 'finish';
     };
     payload: T;
 }
