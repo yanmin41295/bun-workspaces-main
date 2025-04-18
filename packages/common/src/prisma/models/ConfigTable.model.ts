@@ -1,4 +1,4 @@
-import {IsDate, IsDefined, IsInt, IsString} from "class-validator";
+import { IsInt, IsDefined, IsString, IsDate } from "class-validator";
 
 export class ConfigTable {
     @IsDefined()

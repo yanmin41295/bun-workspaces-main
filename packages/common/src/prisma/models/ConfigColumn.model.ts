@@ -1,4 +1,4 @@
-import {IsBoolean, IsDefined, IsInt, IsString} from "class-validator";
+import { IsInt, IsDefined, IsString, IsBoolean } from "class-validator";
 
 export class ConfigColumn {
     @IsDefined()

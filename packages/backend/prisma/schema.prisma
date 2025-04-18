@@ -61,3 +61,35 @@ model User {
 
   @@map("t_user")
 }
+
+// 所有日志都在内存中，并在数据库备份，过滤器保存时才保存对应的日志
+model Log {
+  id      Int      @id @default(autoincrement())
+  service String
+  pid     Int
+  time    DateTime
+  level   String
+  label1  String
+  label2  String
+  label3  String
+  message String
+
+  @@map("t_log")
+}
+
+model LogFilter {
+  id        Int      @id @default(autoincrement())
+  name      String
+  filter    String
+  type      String
+  createdAt DateTime @default(now())
+  version   Int      @default(1)
+  desc      String   @default("")
+
+  @@map("t_log_filter")
+}
+
+model LogFilterLine {
+  id       Int @id @default(autoincrement())
+  filterId Int
+}

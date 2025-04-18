@@ -5,7 +5,7 @@ import websocket from '@fastify/websocket'
 import fastifyStatic from '@fastify/static';
 import * as path from "node:path";
 import {WsMsgData} from "@mono/common/src/types.js";
-import {WsHandler} from "./controller/ws.handler.js";
+import {WsHandler} from "./ws/ws.handler.js";
 import {createLogHandler, getRequestId, registerLogRequestContext,} from "./log.js";
 
 export const server = await Fastify({
@@ -27,17 +27,24 @@ server.get('/websocket', {websocket: true}, function wsHandler(socket, req) {
     // bound to fastify server
     socket.on('open', () => {
         LOGGER.info('websocket open')
+        socket.send('hi from server')
     })
 
     socket.on('message', message => {
-        // message.toString() === 'hi from client'
-        socket.send('hi from server')
-        // 假设客户端发送一个命令来执行
-        const msg = message.toString();
         try {
+            const msg = message.toString();
+            if (!msg) {
+                return;
+            }
+            if (msg === 'ping') {
+                socket.send('pong')
+                return;
+            }
+            LOGGER.info('websocket message %s', getRequestId(), msg);
             let data: WsMsgData = JSON.parse(msg);
             new WsHandler(socket).handle(data)
         } catch (e) {
+            LOGGER.error('invalid message %s', getRequestId(), e);
             socket.send(JSON.stringify({
                 header: {
                     code: 'error',

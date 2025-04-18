@@ -29,7 +29,10 @@
     "lodash": "^4.17.21",
     "pino-roll": "^3.1.0",
     "sass": "^1.86.0",
+    "uuid": "^11.1.0",
     "vitest": "^3.0.9",
+    "vue-json-viewer": "3",
+    "xregexp": "^5.1.2",
     "zod": "^3.24.2"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import {IsDefined, IsInt, IsOptional, IsString} from "class-validator";
+import { IsInt, IsDefined, IsString, IsOptional } from "class-validator";
 
 export class User {
     @IsDefined()

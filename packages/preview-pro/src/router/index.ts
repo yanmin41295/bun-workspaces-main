@@ -16,7 +16,7 @@ export default createRouter({
             name: 'index',
             meta: {title: 'Home'},
             component: BasicLayout,
-            redirect: '/viewtable',
+            redirect: '/admins',
             children: [
                 {
                     path: '/viewtable',
@@ -41,8 +41,14 @@ export default createRouter({
                     name: 'admins',
                     meta: {title: '管理页', icon: 'icon-tuijian', flat: true},
                     component: BlankLayout,
-                    redirect: () => ({name: 'page1'}),
+                    redirect: () => ({name: 'ConditionFilter'}),
                     children: [
+                        {
+                            path: 'ConditionFilter',
+                            name: 'ConditionFilter',
+                            meta: {title: 'ConditionFilter'},
+                            component: () => import('../views/ConditionFilter.vue'),
+                        },
                         {
                             path: 'page-1',
                             name: 'page1',

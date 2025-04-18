@@ -4,7 +4,6 @@
       <component :is="Component" :key="route.path"/>
     </keep-alive>
   </RouterView>
-  <RouterView/>
 </template>
 <script lang="ts" setup>
 import {RouterView} from 'vue-router';

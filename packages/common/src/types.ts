@@ -22,14 +22,13 @@ export interface MenuItem extends MenuMeta {
 }
 
 export interface WsMsgData<T = any> {
-    header: {
-        messageId: string;
-        taskId: string;
-        interactId: number;
-        action: string;
-        type: 'request' | 'response';
-        code: 'success' | 'error' | 'fail' | 'init' | 'partial' | 'finish';
-    };
+    taskId: string;
+    taskName: string;
+    messageId: string;
+    timeStr: string;
+    interactId: number;
+    action: string;
+    msgType: 'success' | 'error' | 'fail' | 'init' | 'partial' | 'finish' | 'confirm';
     payload: T;
 }
 

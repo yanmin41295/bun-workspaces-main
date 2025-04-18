@@ -67,6 +67,10 @@ import {Random} from "mockjs";
 import {userApi} from "@/api/controller.api";
 import {User} from "@mono/common/src/prisma/interfaces.ts";
 
+
+/*
+*  文本、数字，选择，多选，复选框，状态、标签、日期、文件，图片，视频，音频，链接，操作，关联关系，富文本，
+* */
 async function getUser() {
   let user: User = await userApi.findByUserId({userId: "1"})
   console.log(user)

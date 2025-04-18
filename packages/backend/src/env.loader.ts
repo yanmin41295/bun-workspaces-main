@@ -13,7 +13,8 @@ export interface ProgramEnv {
         level?: string,
         dir?: string,
         filename?: string,
-    }
+    },
+    gitBash: string;
 }
 
 export async function initEnv(filename: string = 'env.json5'): Promise<ProgramEnv> {
