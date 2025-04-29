@@ -8,7 +8,10 @@ export interface RouterItem {
     children: RouterItem[]
     menuMeta?: MenuMeta
 }
-
+export interface User {
+    id: number;
+    name: string;
+}
 
 export interface MenuMeta {
     menuId: string;
@@ -21,16 +24,6 @@ export interface MenuItem extends MenuMeta {
     children: MenuItem[]
 }
 
-export interface WsMsgData<T = any> {
-    taskId: string;
-    taskName: string;
-    messageId: string;
-    timeStr: string;
-    interactId: number;
-    action: string;
-    msgType: 'success' | 'error' | 'fail' | 'init' | 'partial' | 'finish' | 'confirm';
-    payload: T;
-}
 
 export type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];

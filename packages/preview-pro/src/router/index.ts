@@ -41,7 +41,7 @@ export default createRouter({
                     name: 'admins',
                     meta: {title: '管理页', icon: 'icon-tuijian', flat: true},
                     component: BlankLayout,
-                    redirect: () => ({name: 'ConditionFilter'}),
+                    redirect: () => ({name: 'page1'}),
                     children: [
                         {
                             path: 'ConditionFilter',

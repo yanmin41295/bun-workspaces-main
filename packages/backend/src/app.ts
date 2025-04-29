@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import ProgramEnv from "./env.loader.ts";
+import ProgramEnv from "./env.ts";
 import {LOGGER, server} from "./server.ts";
 import path from "node:path";
 import {PrismaClient} from "./prisma/index.js";

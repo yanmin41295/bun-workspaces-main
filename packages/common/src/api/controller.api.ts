@@ -2,7 +2,7 @@ export interface Api<T extends Api<{ getApiUrl(): any }> = Api<{ getApiUrl(): an
     getApiUrl(): {
         namespace: string,
         methods: {
-            [key in Exclude<keyof T, 'getApiUrl'>]: string
+            [key in Exclude<keyof T, 'getApiUrl' | 'wsProxy'>]: string
         }
     }
 }

@@ -9,6 +9,7 @@ import App from './App.vue';
 import STable from '@surely-vue/table';
 import '@surely-vue/table/dist/index.less';
 import {loader} from '@guolao/vue-monaco-editor'
+import {Container} from "@mono/common/src/api/container";
 
 loader.config({
     paths: {
@@ -21,4 +22,5 @@ app.use(ConfigProvider);
 app.use(ProLayout).use(PageContainer);
 app.use(STable);
 app.mount('#app');
-
+let container = new Container();
+await container.initNestRouter()

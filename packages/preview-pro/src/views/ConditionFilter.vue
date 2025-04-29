@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, onUnmounted, ref, shallowRef} from 'vue'
+import {ref, shallowRef} from 'vue'
 import VueMonacoEditor from '@guolao/vue-monaco-editor'
 import {format} from 'date-fns';
 import {userApi} from "@/api/controller.api";
@@ -26,34 +26,11 @@ import {v4 as uuidv4} from 'uuid';
 import JsonViewer from 'vue-json-viewer'
 
 const message = ref('');
-let websocket: WebSocket | null = null;
 
-const connectWebSocket = () => {
-  websocket = new WebSocket('ws://localhost:3000/websocket');
-  websocket.onmessage = (event) => {
-    message.value = JSON.parse(event.data);
-  };
-  websocket.onclose = () => {
-    console.log('WebSocket连接已关闭');
-  };
-  websocket.onerror = () => {
-    console.log('WebSocket连接发生错误');
-  };
-};
-
-function findUser() {
-  userApi.findByUserId({userId: "1"})
+async function findUser() {
+  let user = await userApi.findByUserId({userId: "1"})
+  console.log('findUser' + JSON.stringify(user))
 }
-
-onMounted(() => {
-  connectWebSocket();
-});
-
-onUnmounted(() => {
-  if (websocket) {
-    websocket.close();
-  }
-});
 
 function startSaveLog() {
   websocket?.send(JSON.stringify({
