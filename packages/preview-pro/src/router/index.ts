@@ -2,7 +2,6 @@ import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router';
 import BasicLayout from '../layouts/BasicLayout.vue';
 import BlankLayout from '../layouts/BlankLayout.vue';
 import WelcomePage from '../views/Page1.vue';
-import TableConfig from '@/components/TableConfig.vue';
 
 // only githubpages preview site used, if use template please remove this check
 // and use `createWebHistory` is recommend
@@ -19,18 +18,6 @@ export default createRouter({
             redirect: '/admins',
             children: [
                 {
-                    path: '/viewtable',
-                    name: 'viewtable',
-                    meta: {title: '表格', icon: 'icon-icon-test'},
-                    component: TableConfig,
-                },
-                {
-                    path: '/tableconfig',
-                    name: 'tableconfig',
-                    meta: {title: '表格', icon: 'icon-icon-test'},
-                    component: TableConfig,
-                },
-                {
                     path: '/welcome',
                     name: 'welcome',
                     meta: {title: '欢迎', icon: 'icon-icon-test'},
@@ -41,8 +28,14 @@ export default createRouter({
                     name: 'admins',
                     meta: {title: '管理页', icon: 'icon-tuijian', flat: true},
                     component: BlankLayout,
-                    redirect: () => ({name: 'page1'}),
+                    redirect: () => ({name: 'DemoTest'}),
                     children: [
+                        {
+                            path: 'DemoTest',
+                            name: 'DemoTest',
+                            meta: {title: 'DemoTest'},
+                            component: () => import('../views/DemoTest.vue'),
+                        },
                         {
                             path: 'ConditionFilter',
                             name: 'ConditionFilter',

@@ -1,7 +1,7 @@
 export const controllerKey = '$controller'
 export const requestMappingKey = '$requestMapping'
 
-export function RequestMapping(path: string) {
+export function ApiHandler(path: string) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
         Reflect.defineMetadata(requestMappingKey, path, target, propertyKey)
     }

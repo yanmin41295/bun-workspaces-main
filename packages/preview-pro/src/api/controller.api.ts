@@ -1,67 +1,103 @@
-import {UserApi} from "@mono/common/src/api/UserApi";
-import type {Api} from "@mono/common";
-import {WsProxy} from "@mono/common/src/socket";
-import {WsMsgFun} from "@mono/backend/src/router";
-import {v4 as uuidv4} from "uuid";
-import {format} from "date-fns";
+import {BaseController, Constructor} from "@mono/common/src/api/common";
+import {Container} from "@mono/common/src/api/container";
+import axios from "axios";
+import UserApi from "../../../common/src/api/controller/UserApi";
 
-export class WsDispatchClient implements WsProxy {
-    websocket: WebSocket = new WebSocket('ws://localhost:3000/websocket');
+const service = axios.create({
+    baseURL: import.meta.env.PROD ? '' : "/api"
+})
 
-    constructor() {
-        this.websocket.onmessage = async (message) => {
-            try {
-                const msg = message.data.toString();
-                if (!msg) {
-                    return;
-                }
-                let data: WsMsgData = JSON.parse(msg);
-                console.log(`data ${JSON.stringify(data)}`)
-                let promise = this.map.get(data.context.taskId)
-                if (promise) {
-                    this.map.delete(data.taskId)
-                    return await promise(data)
-                }
-            } catch (e) {
+export class ApiClientProxy {
+    container: Container = new Container()
 
-            }
-        }
-    }
-
-    map = new Map<string, WsMsgFun>()
-
-    createRouterClient<T extends abstract new (...args: any) => Api>(t: T): InstanceType<T> {
-        // @ts-ignore
-        const api = new t() as InstanceType<T>;
-        let apiUrl = api.getApiUrl();
-        apiUrl.namespace;
-        for (let methodsKey in apiUrl.methods) {
-            // @ts-ignore
-            api[methodsKey] = async (arg: any) => {
-                const taskId = uuidv4();
-                this.websocket.send(JSON.stringify({
-                    context: {
-                        taskId,
-                        seqNo: 1,
-                        messageId: uuidv4(),
-                        status: 'init',
-                        timeStr: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
-                        action: `${apiUrl.namespace}.${methodsKey}`,
-                    },
-                    payload: arg,
-                }))
-                return await new Promise((resolve, reject) => {
-                    this.map.set(taskId, (wsMsgData) => {
-                        resolve(wsMsgData)
-                    })
+    creteApiClient<T extends BaseController>(api: Constructor<T>): T {
+        const apiClient = new api();
+        const {controllerPath, apiMethods} = this.container.scanAnnotation(api)
+        apiMethods.forEach(method => {
+            apiClient[method.propertyName] = async (...args: any) => {
+                return await service.request({
+                    method: 'post',
+                    url: `/${controllerPath}/${method.routePath}`,
+                    data: args,
                 })
             }
-        }
-        return api;
+        })
+        return apiClient
     }
 }
 
-// const wsDispatchClient = new WsDispatchClient()
-// export const userApi = wsDispatchClient.createRouterClient(UserApi)
-export const userApi = new UserApi()
+export const apiClient = new ApiClientProxy()
+export const userApi = apiClient.creteApiClient(UserApi)
 
+
+class Task {
+    id: string = ''
+    name: string = ''
+    status: string = ''
+    createTime: Date = new Date()
+    updateTime: Date = new Date()
+    context: any[] = []
+    data: any = {}
+}
+
+class TaskHandler {
+    task: Task;
+
+    constructor(task: Task) {
+        this.task = task;
+    }
+
+    onMessage: (data: Task) => void = (data) => {
+    }
+    onClose: (code: number, reason: string) => void = () => {
+    }
+    onOpen: () => void = () => {
+    }
+    onError: (error: any) => void = (error) => {
+    }
+}
+
+
+class WebsocketClient {
+    websocket: WebSocket = new WebSocket('ws://localhost:3000/websocket');
+    taskPool: Map<string, TaskHandler> = new Map()
+
+    constructor() {
+        this.init()
+    }
+
+    init() {
+        this.websocket.onopen = (event) => {
+            this.taskPool.forEach((client) => {
+                client.onOpen()
+            })
+        }
+        this.websocket.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            const client = this.taskPool.get(data.id)
+            if (client) {
+                client.onMessage(data)
+            }
+        }
+        this.websocket.onclose = (event) => {
+            this.taskPool.forEach((client) => {
+                client.onClose(event.code, event.reason)
+            })
+        }
+        this.websocket.onerror = (event) => {
+            this.taskPool.forEach((client) => {
+                client.onError(event)
+            })
+        }
+    }
+
+
+    registerTaskHandler(client: TaskHandler) {
+        this.taskPool.set(client.task.id, client)
+    }
+
+    unregisterTaskHandler(client: TaskHandler) {
+        this.taskPool.delete(client.task.id)
+    }
+
+}

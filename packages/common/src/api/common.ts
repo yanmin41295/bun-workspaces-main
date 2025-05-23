@@ -1,5 +1,4 @@
 export abstract class BaseController {
-
 }
 
 export type  Constructor<T = any> = new (...args: any[]) => T;
