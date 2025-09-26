@@ -23,6 +23,7 @@ export default defineUserConfig({
                 Quote: path.resolve(__dirname, './components/Quote.vue'),
                 BaseTable: path.resolve(__dirname, './components/BaseTable.vue'),
                 DemoTable: path.resolve(__dirname, './components/DemoTable.vue'),
+                TextCell: path.resolve(__dirname, './components/TextCell.vue'),
             },
         }),
     ],

@@ -13,6 +13,7 @@ const data = {
       "title": "姓名",
       "dataIndex": "name",
       "key": "name",
+      "renderComponent": 'textcell'
     },
     {
       "title": "年龄",

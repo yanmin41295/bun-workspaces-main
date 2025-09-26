@@ -2,14 +2,8 @@
   <div style="margin: 5px;padding: 5px">
     <Table :columns="props.columns" :data-source="props.dataSource" :row-key="rowKey" :bordered="true">
       <template #bodyCell="{column,text,value,index,record}">
-        <template v-if="!column.hide">
-          <div>
-            column : {{ JSON.stringify(column) }}
-            value : {{ JSON.stringify(value) }}
-            text : {{ JSON.stringify(text) }}
-            record : {{ JSON.stringify(record) }}
-            index : {{ JSON.stringify(index) }}
-          </div>
+        <template v-if="column.renderComponent">
+          <component :is="column.renderComponent" :value="value" :record="record" :column="column"></component>
         </template>
       </template>
     </Table>
