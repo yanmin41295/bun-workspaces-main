@@ -24,7 +24,7 @@ async function checkIfExportsSubclass(module: any, baseClass: any): Promise<bool
     }
 }
 
-export class Container implements SpiLoader<Map<string, [Function, any]>> {
+export class Container implements SpiLoader<Map<string, [Function, any, string]>> {
     lambdaMap: Map<string, [Function, any, string]> = new Map();
 
     async load(packagePath: string, packageRootPath: string = process.cwd()): Promise<Map<string, [Function, any, string]>> {
