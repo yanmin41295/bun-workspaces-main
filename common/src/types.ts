@@ -8,10 +8,6 @@ export interface RouterItem {
     children: RouterItem[]
     menuMeta?: MenuMeta
 }
-export interface User {
-    id: number;
-    name: string;
-}
 
 export interface MenuMeta {
     menuId: string;
@@ -33,3 +29,6 @@ export type DeepPartial<T> = {
 export  type DeepRequired<T> = {
     [P in keyof T]-?: T[P] extends object ? DeepRequired<T[P]> : T[P];
 };
+export type MethodNames<T> = {
+    [K in keyof T]: T[K] extends (...args: any[]) => any ? K : never
+}[keyof T];

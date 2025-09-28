@@ -1,7 +1,6 @@
-import {BaseController, Constructor} from "@mono/common/src/api/common";
-import {Container} from "@mono/common/src/api/container";
 import axios from "axios";
 import UserApi from "../../../common/src/api/controller/UserApi";
+import {BaseController, Constructor, Container} from "@mono/common/src/api/container";
 
 const service = axios.create({
     baseURL: import.meta.env.PROD ? '' : "/api"
@@ -10,24 +9,31 @@ const service = axios.create({
 export class ApiClientProxy {
     container: Container = new Container()
 
-    creteApiClient<T extends BaseController>(api: Constructor<T>): T {
-        const apiClient = new api();
-        const {controllerPath, apiMethods} = this.container.scanAnnotation(api)
-        apiMethods.forEach(method => {
-            apiClient[method.propertyName] = async (...args: any) => {
+    async creteApiClient<T extends BaseController>(api: Constructor<T>): Promise<T> {
+        const map: Map<string, [Function, any, string]> = await this.container.load('./src/api/controller', 'D:\\codespace\\bun-workspaces-main\\common');
+        let apiInstance = new api()
+        map.forEach((value, key) => {
+            const [method, instance, propertyName] = value
+            if (instance.prototype !== api) {
+                return
+            }
+            // @ts-ignore
+            apiInstance[propertyName] = async (...args: any) => {
                 return await service.request({
                     method: 'post',
-                    url: `/${controllerPath}/${method.routePath}`,
+                    url: `/lambda/${key}`,
                     data: args,
                 })
             }
         })
-        return apiClient
+        return apiInstance as T
     }
 }
 
-export const apiClient = new ApiClientProxy()
-export const userApi = apiClient.creteApiClient(UserApi)
+export const
+    apiClient = new ApiClientProxy()
+export const
+    userApi = apiClient.creteApiClient(UserApi)
 
 
 class Task {

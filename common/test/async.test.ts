@@ -1,8 +1,6 @@
 import {CallBack} from "../src/types.ts";
 import {asyncCall, AsyncLock, promiseCatch, promisify, promisifyCallBack} from "../src/async.ts";
-import {UserApi} from "../src/api/UserApi.ts";
 import * as console from "node:console";
-import {getMethods} from "../src/api/controller.api.ts";
 import {describe, expect, test} from "vitest";
 
 describe("promisify args fun", () => {
@@ -96,16 +94,6 @@ test("promisifyCallBack", async () => {
     }))
     const result = await asyncAdd(1, 2);
     expect(3).toBe(result);
-});
-
-test("getMethods", async () => {
-    function creatRouterApi<T>(t: new (...args: any[]) => UserApi) {
-        const api = new t();
-        console.log(1)
-    }
-
-    const methods = getMethods(UserApi);
-    expect(methods).toBe(methods);
 });
 
 

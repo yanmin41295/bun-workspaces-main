@@ -1,10 +1,12 @@
 import {test} from "vitest";
 import {Container} from "@mono/common/src/api/container.js";
-import UserApi from "packages/common/src/api/controller/UserApi.js";
 
-test('ioc ', async () => {
-    const container = new Container()
-    const [instance, methodName] = container.getHandler<UserApi>('user.findUser')
-    const result = await instance[methodName]('1')
-    console.info(result)
+class IocContainer extends Container {
+
+}
+test('service ioc', async () => {
+    const container = new IocContainer();
+    await container.load('./src/controller');
+    let result = await container.callLambda('user-findUser', {userId: 1})
+    console.log(result)
 })
