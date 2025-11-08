@@ -20,6 +20,7 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
+    "noImplicitAny": false,
     "outDir": "./dist",
     "types": [
       "bun-types"

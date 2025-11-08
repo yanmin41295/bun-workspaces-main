@@ -1,7 +1,7 @@
+import 'reflect-metadata';
 import {glob} from "glob";
 import {controllerKey, requestMappingKey} from "@mono/common/src/api/annotation.js";
 import {SpiLoader} from "../spi/SpiLoader.js";
-import 'reflect-metadata';
 
 export type  Constructor<T = any> = new (...args: any[]) => T;
 
