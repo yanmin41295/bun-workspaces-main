@@ -1,0 +1,32 @@
+{
+  "level": "error",
+  "time": "2025-11-09 17:00:58.851",
+  "pid": 12624,
+  "hostname": "PC",
+  "req": {
+    "method": "GET",
+    "url": "/download/test.txt",
+    "parameters": {
+      "filename": "test.txt"
+    },
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "user-agent": "axios/1.8.4",
+      "accept-encoding": "gzip, compress, deflate, br",
+      "host": "localhost:3000",
+      "connection": "keep-alive"
+    }
+  },
+  "res": {
+    "statusCode": 500
+  },
+  "err": {
+    "type": "FastifyError",
+    "message": "Attempted to send payload of invalid type 'object'. Expected a string or Buffer.",
+    "stack": "Error\n    at onSendEnd (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\reply.js:642:15)\n    at onSendHook (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\reply.js:529:5)\n    at <anonymous> (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\reply.js:209:3)\n    at basic404 (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\fourOhFour.js:55:21)\n    at preHandlerCallbackInner (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\handleRequest.js:161:24)\n    at preHandlerCallback (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\handleRequest.js:129:5)\n    at notFound (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\reply.js:906:15)\n    at <anonymous> (D:\\codespace\\bun-workspaces-main\\node_modules\\fastify\\lib\\reply.js:449:3)\n    at processTicksAndRejections (native:7:39)",
+    "code": "FST_ERR_REP_INVALID_PAYLOAD_TYPE",
+    "name": "FastifyError",
+    "statusCode": 500
+  },
+  "msg": "Attempted to send payload of invalid type 'object'. Expected a string or Buffer."
+}

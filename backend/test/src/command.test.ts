@@ -1,5 +1,5 @@
 import {describe, expect, it} from "vitest";
-import {execute} from "../src/command.js";
+import {execute} from "../../src/command.js";
 
 describe('exec ', async () => {
     it('git version', async () => {

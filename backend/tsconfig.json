@@ -24,7 +24,6 @@
     "outDir": "./dist",
     "types": [
       "bun-types"
-      // add Bun global
     ]
   },
   "include": [
