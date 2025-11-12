@@ -24,7 +24,7 @@ const testRoutes: FastifyPluginAsync = async (server) => {
         Body: { username: string },
         Headers: { token: string; },
         Reply: { hello: string, date: string };
-    }>('/hello/:userId', {}, async (request, reply) => {
+    }>('/hello/:userId', async (request, reply) => {
         return {
             hello: JSON.stringify({
                 Params: request.params,
@@ -34,6 +34,10 @@ const testRoutes: FastifyPluginAsync = async (server) => {
             }),
             date: new Date().toLocaleString()
         }
+    })
+
+    server.get('/error', async (request, reply) => {
+        throw new Error('test error')
     })
 }
 

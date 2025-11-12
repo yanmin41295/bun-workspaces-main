@@ -1,6 +1,7 @@
 import Fastify, {FastifyReply} from 'fastify'
 import fastifyStatic from '@fastify/static';
 import fastifyMultipart from '@fastify/multipart';
+import fastifyWebsocket, {WebSocket} from '@fastify/websocket';
 import * as path from "node:path";
 import {createLogHandler, registerLogRequestContext,} from "./log.js";
 import UserRouter from "./routes/user.router.js"
@@ -22,7 +23,18 @@ await server.register(fastifyStatic, {
     root: path.join(process.cwd(), 'public'),
     index: ['index.html', 'index.htm'],
 });
+// 注册 WebSocket 支持
+await server.register(fastifyWebsocket);
+server.get('/ws', {websocket: true}, (connection: WebSocket, req) => {
+    // 监听客户端发送的消息
+    connection.onmessage = (message) => {
+        // 处理客户端发送的消息
+        console.log('Received message:', String(message.data),message.type);
+        // 发送消息给客户端
+        connection.send(message.data);
+    };
 
+});
 // 全局异常处理器
 server.setErrorHandler(function (error, request, reply) {
     // 记录错误日志
