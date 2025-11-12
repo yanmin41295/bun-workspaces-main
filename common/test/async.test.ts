@@ -1,5 +1,4 @@
-import {CallBack} from "../src/types.ts";
-import {asyncCall, AsyncLock, promiseCatch, promisify, promisifyCallBack} from "../src/async.ts";
+import {asyncCall, AsyncLock, CallBack, promiseCatch, promisify, promisifyCallBack} from "../src/async.ts";
 import * as console from "node:console";
 import {describe, expect, test} from "vitest";
 

@@ -3,11 +3,11 @@ import fs from "fs";
 import JSON5 from 'json5'
 
 export interface ProgramEnv {
-    server?: {
-        port?: number;
+    server: {
+        port: number;
     },
-    database?: {
-        url?: string;
+    database: {
+        url: string;
     },
     logging?: {
         level?: string,

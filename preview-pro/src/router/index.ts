@@ -28,20 +28,8 @@ export default createRouter({
                     name: 'admins',
                     meta: {title: '管理页', icon: 'icon-tuijian', flat: true},
                     component: BlankLayout,
-                    redirect: () => ({name: 'DemoTest'}),
+                    redirect: () => ({name: 'page1'}),
                     children: [
-                        {
-                            path: 'DemoTest',
-                            name: 'DemoTest',
-                            meta: {title: 'DemoTest'},
-                            component: () => import('../views/DemoTest.vue'),
-                        },
-                        {
-                            path: 'ConditionFilter',
-                            name: 'ConditionFilter',
-                            meta: {title: 'ConditionFilter'},
-                            component: () => import('../views/ConditionFilter.vue'),
-                        },
                         {
                             path: 'page-1',
                             name: 'page1',

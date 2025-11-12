@@ -15,12 +15,12 @@ describe('FileUtil', () => {
 
 
     it('uploadFile', async () => {
-        const resp = await uploadFile('http://localhost:3000/upload', testFile, 'test.txt')
+        const resp = await uploadFile('http://localhost:3000/file/upload', testFile, 'test.txt')
         console.log(resp)
     });
 
     it('downloadFile', async () => {
-        const resp = await downloadFileToPath('http://localhost:3000/download/test.txt', path.join(process.cwd(), 'test', 'test-temp'))
+        const resp = await downloadFileToPath('http://localhost:3000/file/download/test.txt', path.join(process.cwd(), 'test', 'test-temp'))
         console.log(resp)
     });
 

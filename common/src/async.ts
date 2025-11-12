@@ -1,5 +1,4 @@
-import {type CallBack} from "./types.ts";
-
+export type CallBack<T, E = any> = (err: E, data: T) => void
 export async function sleep(milliseconds: number) {
     await new Promise((resolve, reject) => {
         setTimeout(() => {

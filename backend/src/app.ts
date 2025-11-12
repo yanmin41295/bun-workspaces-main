@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import {LOGGER, server} from "./server.ts";
-import envLoader from "./env/env.loader.js";
 import {Container} from "@mono/common/src/api/container.js";
+// 导入用户路由
+import './routes/user.router.ts';
+import ProgramEnv from "./env.js";
 
-export const ProgramEnv = await envLoader.load()
 const container = new Container();
 await container.load('./src/controller');
 
