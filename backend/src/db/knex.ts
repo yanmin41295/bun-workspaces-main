@@ -19,7 +19,7 @@ const createFilesTable = async () => {
             table.integer('size').notNullable();
             table.string('md5').notNullable();
             table.datetime('uploadTime').notNullable();
-            table.enu('type', ['file', 'dir']).notNullable();
+            table.string('type').defaultTo('');
             table.string('tag').defaultTo('');
             table.string('description').defaultTo('');
             table.string('filepath').notNullable();

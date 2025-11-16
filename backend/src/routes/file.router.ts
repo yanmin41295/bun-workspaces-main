@@ -152,9 +152,11 @@ const fileRouters: FastifyPluginAsync = async (server) => {
 
             for await (const part of parts) {
                 if (part.file) {
-                    // 生成文件名
-                    const filename = part.filename || `upload_${Date.now()}_${Math.floor(Math.random() * 1000)}.dat`;
+                    // 生成带时间戳的文件名
+                    const filename = generateTimestampFilename(part.filename || '');
                     const filepath = path.join(uploadDir, filename);
+
+                    console.log(`Processing file: ${part.filename}, saving as: ${filename}`);
 
                     // 保存文件，使用 pipeline 处理流
                     await pipeline(part.file, createWriteStream(filepath));
@@ -168,14 +170,14 @@ const fileRouters: FastifyPluginAsync = async (server) => {
                     fileEntity.size = fileStats.size;
                     fileEntity.md5 = '';
                     fileEntity.uploadTime = new Date();
-                    fileEntity.type = part.type;
+                    fileEntity.type = getFileExtension(filename);
                     fileEntity.tag = '';
                     fileEntity.description = '';
                     fileEntity.filepath = filepath;
                     fileEntity.filename = filename;
 
                     // 保存到数据库
-                    const [id] = await db('files').insert({
+                    await db('files').insert({
                         originFileName: fileEntity.originFileName,
                         size: fileEntity.size,
                         md5: fileEntity.md5,
@@ -183,11 +185,9 @@ const fileRouters: FastifyPluginAsync = async (server) => {
                         type: fileEntity.type,
                         tag: fileEntity.tag,
                         description: fileEntity.description,
-                        filepath: filepath,
-                        filename: filename
+                        filepath: fileEntity.filepath,
+                        filename: fileEntity.filename
                     });
-
-                    fileEntity.id = id;
                     uploadedFiles.push(fileEntity);
                 } else {
                     // 处理非文件字段（如果有需要）
@@ -199,12 +199,14 @@ const fileRouters: FastifyPluginAsync = async (server) => {
                 return reply.status(400).send({error: 'No files uploaded'});
             }
 
+            LOGGER.info(`Upload completed. Total files: ${uploadedFiles.length}`);
             return {
                 code: 0,
                 message: 'Files uploaded successfully',
                 data: uploadedFiles.length === 1 ? uploadedFiles[0] : uploadedFiles
             };
         } catch (error) {
+            console.error('Upload error:', error);
             LOGGER.error('Upload error:', error);
             return reply.status(500).send({
                 code: -1,
@@ -270,10 +272,9 @@ const fileRouters: FastifyPluginAsync = async (server) => {
                 fileEntity.filename = file.filename;
 
                 // 如果是 ZIP 文件，检查是否有对应的解压目录
-                if (fileEntity.type === 'file' && path.extname(fileEntity.originFileName).toLowerCase() === '.zip') {
+                if (path.extname(fileEntity.originFileName).toLowerCase() === '.zip') {
                     const nameWithoutExt = path.basename(fileEntity.originFileName, '.zip');
                     const extractDir = path.join(uploadDir, `${nameWithoutExt}_unzip`);
-
                     try {
                         await fs.access(extractDir);
                         // 如果解压目录存在，添加标记
@@ -282,7 +283,6 @@ const fileRouters: FastifyPluginAsync = async (server) => {
                         // 解压目录不存在，保持原样
                     }
                 }
-
                 fileList.push(fileEntity);
             }
 
