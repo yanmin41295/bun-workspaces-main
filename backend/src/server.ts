@@ -18,7 +18,14 @@ export const server = await Fastify({
 export const LOGGER = await registerLogRequestContext(server)
 
 // 注册 multipart 支持
-await server.register(fastifyMultipart);
+await server.register(fastifyMultipart, {
+    limits: {
+        // 设置为您需要的最大文件大小（以字节为单位）
+        fileSize: 1048576000, // 100MB
+        files: 10, // 最多同时上传10个文件
+        fields: 10, // 最多10个字段
+    }
+});
 await server.register(fastifyStatic, {
     root: path.join(process.cwd(), 'public'),
     index: ['index.html', 'index.htm'],
@@ -29,7 +36,7 @@ server.get('/ws', {websocket: true}, (connection: WebSocket, req) => {
     // 监听客户端发送的消息
     connection.onmessage = (message) => {
         // 处理客户端发送的消息
-        console.log('Received message:', String(message.data),message.type);
+        console.log('Received message:', String(message.data), message.type);
         // 发送消息给客户端
         connection.send(message.data);
     };

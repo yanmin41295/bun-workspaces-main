@@ -23,15 +23,15 @@ const testRoutes: FastifyPluginAsync = async (server) => {
         Querystring: { time: string },
         Body: { username: string },
         Headers: { token: string; },
-        Reply: { hello: string, date: string };
+        Reply: { hello: object, date: string };
     }>('/hello/:userId', async (request, reply) => {
         return {
-            hello: JSON.stringify({
+            hello: {
                 Params: request.params,
                 Querystring: request.query,
                 Body: request.body,
                 Headers: request.headers,
-            }),
+            },
             date: new Date().toLocaleString()
         }
     })

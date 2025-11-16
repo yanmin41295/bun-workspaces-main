@@ -1,30 +1,37 @@
 import knex from 'knex';
-import {LOGGER} from "../server.js";
+import ProgramEnv from "../env.js";
 
-export const KnexClient = knex({
+const db = knex({
     client: 'sqlite3',
     connection: {
-        filename: 'D:\\codespace\\bun-workspaces-main\\backend\\database\\db.sqlite',
-        // options: {
-        //     nativeBinding: "/path/to/better_sqlite3.node",
-        // },
-        debug: true,
+        filename: `${ProgramEnv.database.url}`
     },
-    asyncStackTraces: true,
-    pool: {
-        min: 0, max: 7,
-        afterCreate: async (conn: any, done: any) => {
-            LOGGER.info('afterCreate')
-            done(null, conn)
-        },
-    },
-    migrations: {
-        tableName: 'migrations'
-    },
-    postProcessResponse: (result, queryContext) => {
-        // TODO: add special case for raw results
-        // (depends on dialect)
-        return result
-    }
+    useNullAsDefault: true,
+});
 
-})
+// 创建文件表
+const createFilesTable = async () => {
+    const exists = await db.schema.hasTable('files');
+    if (!exists) {
+        await db.schema.createTable('files', (table) => {
+            table.increments('id').primary();
+            table.string('originFileName').notNullable();
+            table.integer('size').notNullable();
+            table.string('md5').notNullable();
+            table.datetime('uploadTime').notNullable();
+            table.enu('type', ['file', 'dir']).notNullable();
+            table.string('tag').defaultTo('');
+            table.string('description').defaultTo('');
+            table.string('filepath').notNullable();
+            table.string('filename').notNullable();
+        });
+        console.log('Files table created successfully');
+    }
+};
+
+// 初始化数据库
+createFilesTable().catch(err => {
+    console.error('Error creating files table:', err);
+});
+
+export default db;

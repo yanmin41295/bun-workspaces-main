@@ -2,6 +2,8 @@ import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router';
 import BasicLayout from '../layouts/BasicLayout.vue';
 import BlankLayout from '../layouts/BlankLayout.vue';
 import WelcomePage from '../views/Page1.vue';
+import FileManager from '../views/FileManager.vue';
+
 
 // only githubpages preview site used, if use template please remove this check
 // and use `createWebHistory` is recommend
@@ -30,6 +32,12 @@ export default createRouter({
                     component: BlankLayout,
                     redirect: () => ({name: 'page1'}),
                     children: [
+                        {
+                            path: 'file-manager',
+                            name: 'fileManager',
+                            meta: {title: '文件管理'},
+                            component: () => import('../views/FileManager.vue'),
+                        },
                         {
                             path: 'page-1',
                             name: 'page1',
