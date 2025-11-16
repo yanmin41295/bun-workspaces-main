@@ -367,6 +367,74 @@ const fileRouters: FastifyPluginAsync = async (server) => {
             });
         }
     });
+    
+    // 更新文件信息接口
+    server.put<{ Params: { id: string }, Body: { tag?: string, description?: string } }>('/update/:id', async function (request, reply) {
+        try {
+            const {id} = request.params;
+            const {tag, description} = request.body;
+            // 检查文件是否存在
+            const files = await db('files').where({id: parseInt(id)}).select('*');
+            
+            if (files.length === 0) {
+                return reply.status(404).send({
+                    code: -1,
+                    message: 'File not found'
+                });
+            }
+
+            // 准备要更新的字段
+            const updateData: any = {};
+            if (tag !== undefined) {
+                updateData.tag = tag;
+            }
+            if (description !== undefined) {
+                updateData.description = description;
+            }
+
+            // 如果没有提供任何可更新的字段
+            if (Object.keys(updateData).length === 0) {
+                return reply.status(400).send({
+                    code: -1,
+                    message: 'No update data provided'
+                });
+            }
+
+            // 更新数据库中的记录
+            await db('files')
+                .where({id: parseInt(id)})
+                .update(updateData);
+
+            // 获取更新后的文件信息
+            const updatedFiles = await db('files').where({id: parseInt(id)}).select('*');
+            const updatedFile = updatedFiles[0];
+
+            const fileEntity = new FileEntity();
+            fileEntity.id = updatedFile.id;
+            fileEntity.originFileName = updatedFile.originFileName;
+            fileEntity.size = updatedFile.size;
+            fileEntity.md5 = updatedFile.md5;
+            fileEntity.uploadTime = new Date(updatedFile.uploadTime);
+            fileEntity.type = updatedFile.type;
+            fileEntity.tag = updatedFile.tag;
+            fileEntity.description = updatedFile.description;
+            fileEntity.filepath = updatedFile.filepath;
+            fileEntity.filename = updatedFile.filename;
+
+            return {
+                code: 0,
+                message: 'File information updated successfully',
+                data: fileEntity
+            };
+        } catch (error) {
+            LOGGER.error('Update file error:', error);
+            return reply.status(500).send({
+                code: -1,
+                message: 'Failed to update file information',
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    });
 };
 
 export default {router: fileRouters, prefix: '/file'};

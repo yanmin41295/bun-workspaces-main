@@ -182,3 +182,4 @@ packages/backend/drizzle
 backend/database/*
 logs/*
 common/src/prisma/*
+backend/public/uploads/
