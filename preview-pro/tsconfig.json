@@ -5,6 +5,7 @@
     "jsxImportSource": "vue",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "paths": {
       "@/*": [
         "./src/*"

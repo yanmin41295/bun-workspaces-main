@@ -1,7 +1,8 @@
 <template>
   <PageContainer>
     <a-card title="文件上传">
-      <a-upload v-model:file-list="fileList" :multiple="true" :max-count="10" :custom-request="customRequest" list-type="text">
+      <a-upload v-model:file-list="fileList" :multiple="true" :max-count="10" :custom-request="customRequest"
+                list-type="text">
         <a-button>
           <upload-outlined></upload-outlined>
           选择文件
@@ -30,15 +31,15 @@
 
     <a-card title="文件列表" style="margin-top: 16px;">
       <a-button type="primary" @click="fetchFileList" style="margin-bottom: 16px;">刷新列表</a-button>
-      <a-table 
-        :data-source="fileListData" 
-        :columns="columns" 
-        :pagination="{ pageSize: 10 }"
-        :scroll="{ x: true }"
-        :loading="loading"
-        @change="handleTableChange"
-        :row-key="record => record.id"
-        :expandable="{ 
+      <a-table
+          :data-source="fileListData"
+          :columns="columns"
+          :pagination="{ pageSize: 10 }"
+          :scroll="{ x: true }"
+          :loading="loading"
+          @change="handleTableChange"
+          :row-key="record => record.id"
+          :expandable="{
           childrenColumnName: 'children',
           expandRowByClick: true
         }"
@@ -53,7 +54,8 @@
           <template v-else-if="column.dataIndex === 'tag'">
             <div @dblclick="startEdit(record, 'tag')" style="cursor: pointer;">
               <template v-if="editingKey === record.id && editingField === 'tag'">
-                <a-input v-model:value="record.tag" @blur="saveEdit(record)" @keydown.enter="saveEdit(record)" style="width: 100px; margin-right: 8px;" />
+                <a-input v-model:value="record.tag" @blur="saveEdit(record)" @keydown.enter="saveEdit(record)"
+                         style="width: 100px; margin-right: 8px;"/>
               </template>
               <template v-else>
                 {{ record.tag || '双击编辑' }}
@@ -63,12 +65,36 @@
           <template v-else-if="column.dataIndex === 'description'">
             <div @dblclick="startEdit(record, 'description')" style="cursor: pointer;">
               <template v-if="editingKey === record.id && editingField === 'description'">
-                <a-input v-model:value="record.description" @blur="saveEdit(record)" @keydown.enter="saveEdit(record)" style="width: 150px; margin-right: 8px;" />
+                <a-input v-model:value="record.description" @blur="saveEdit(record)" @keydown.enter="saveEdit(record)"
+                         style="width: 150px; margin-right: 8px;"/>
               </template>
               <template v-else>
                 {{ record.description || '双击编辑' }}
               </template>
             </div>
+          </template>
+          <template v-else-if="column.dataIndex === 'action'">
+            <a-button
+                v-if="!record.zipped"
+                type="primary"
+                size="small"
+                @click="extractFile(record)"
+                style="margin-right: 8px;"
+            >
+              解压
+            </a-button>
+            <a-button
+                v-if="record.tag === 'extracted'"
+                type="default"
+                size="small"
+                @click="loadExtractedFiles(record)"
+                style="margin-right: 8px;"
+            >
+              查看
+            </a-button>
+            <a-button type="primary" size="small" @click="showDeleteConfirm(record)">
+              删除
+            </a-button>
           </template>
         </template>
       </a-table>
@@ -77,38 +103,25 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, onMounted, h} from 'vue';
+import {h, onMounted, ref} from 'vue';
+import type {TableProps, UploadFile} from 'ant-design-vue';
 import {message, Modal} from 'ant-design-vue';
 import {PageContainer} from '@ant-design-vue/pro-layout';
 import {UploadOutlined} from '@ant-design/icons-vue';
-import type {UploadFile, UploadProps} from 'ant-design-vue';
-import type {TableProps} from 'ant-design-vue';
-
-// 使用 FileEntity 接口
-interface FileEntity {
-  id: number;
-  originFileName: string;
-  size: number;
-  md5: string;
-  uploadTime: Date | string;
-  type: 'file' | 'dir';
-  tag: string;
-  description: string;
-  filepath: string;
-  filename: string;
-  // 解压后的文件列表
-  children?: FileEntity[];
-  hasChildren?: boolean;
-  // 文件扩展名
-  extension?: string;
-}
+import {formatDate, formatFileSize} from "@mono/common/src/util";
+import {FileEntityVo} from "@mono/common/src/api/model/File";
+import {fileApiClient} from "@/api/api.base";
 
 const fileList = ref<UploadFile[]>([]);
-const fileListData = ref<FileEntity[]>([]);
+const fileListData = ref<FileEntityVo[]>([]);
 const loading = ref<boolean>(false);
 const editingKey = ref<number>(0);
 const editingField = ref<string>('');
-const editingRecord = ref<FileEntity | null>(null);
+const editingRecord = ref<FileEntityVo | null>(null);
+// 组件挂载时获取文件列表
+onMounted(() => {
+  fetchFileList();
+});
 
 // 表格列定义
 const columns = [
@@ -121,7 +134,7 @@ const columns = [
     title: '文件名称',
     dataIndex: 'originFileName',
     key: 'originFileName',
-    customRender: ({ record }: { record: FileEntity }) => {
+    customRender: ({record}: { record: FileEntityVo }) => {
       return h('span', record.originFileName + (record.type === 'dir' ? '/' : ''));
     }
   },
@@ -154,7 +167,7 @@ const columns = [
     title: '扩展名',
     dataIndex: 'originFileName',
     key: 'extension',
-    customRender: ({ record }: { record: FileEntity }) => {
+    customRender: ({record}: { record: FileEntityVo }) => {
       if (record.type === 'dir') {
         return h('span', '-');
       }
@@ -170,8 +183,8 @@ const columns = [
   },
 ];
 
-const customRequest: UploadProps['customRequest'] = (options) => {
-  const { file, onProgress, onSuccess, onError } = options;
+function customRequest(options) {
+  const {file, onProgress, onSuccess, onError} = options as any
   const formData = new FormData();
   formData.append('file', file as any);
 
@@ -184,8 +197,7 @@ const customRequest: UploadProps['customRequest'] = (options) => {
       // 计算上传进度百分比
       const percent = Math.round((event.loaded / event.total) * 100);
       // 调用 Ant Design Vue 的 onProgress 回调更新进度显示
-      onProgress!({ percent });
-      
+      onProgress!({percent});
       // 在控制台输出进度，方便调试
       console.log(`${file.name} 上传进度: ${percent}%`);
     }
@@ -195,21 +207,21 @@ const customRequest: UploadProps['customRequest'] = (options) => {
   xhr.onload = () => {
     console.log('Upload response status:', xhr.status);
     console.log('Upload response text:', xhr.responseText);
-    
+
     if (xhr.status === 200) {
       try {
         const result = JSON.parse(xhr.responseText);
         console.log('Parsed response:', result);
-        
+
         if (result.code === 0) {
           onSuccess!(result);
-          
+
           // 添加到已上传文件列表
           if (result.data) {
             const data = Array.isArray(result.data) ? result.data : [result.data];
             fileListData.value.push(...data);
           }
-          
+
           message.success(`${file.name} 上传成功`);
         } else {
           onError!(new Error(result.message));
@@ -233,9 +245,9 @@ const customRequest: UploadProps['customRequest'] = (options) => {
     message.error(`${file.name} 上传失败: 网络错误`);
   };
 
-  xhr.open('POST', '/api/file/upload');
+  xhr.open('POST', '/api/uploadFile');
   xhr.send(formData);
-  
+
   // 返回一个 abort 函数，允许取消上传
   return {
     abort() {
@@ -244,32 +256,13 @@ const customRequest: UploadProps['customRequest'] = (options) => {
   };
 };
 
-// 格式化文件大小
-const formatFileSize = (size: number): string => {
-  if (size < 1024) {
-    return size + ' B';
-  } else if (size < 1024 * 1024) {
-    return (size / 1024).toFixed(2) + ' KB';
-  } else if (size < 1024 * 1024 * 1024) {
-    return (size / (1024 * 1024)).toFixed(2) + ' MB';
-  } else {
-    return (size / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
-  }
-};
-
-// 格式化日期
-const formatDate = (date: Date | string): string => {
-  const d = new Date(date);
-  return d.toLocaleString('zh-CN');
-};
-
 // 处理表格变化（如分页、排序等）
 const handleTableChange: TableProps['onChange'] = (pagination, filters, sorter) => {
   console.log('表格变化:', pagination, filters, sorter);
 };
 
 // 开始编辑
-const startEdit = (record: FileEntity, field: string) => {
+const startEdit = (record: FileEntityVo, field: string) => {
   editingKey.value = record.id;
   editingField.value = field;
   // 保存原始记录用于取消编辑时恢复
@@ -277,35 +270,16 @@ const startEdit = (record: FileEntity, field: string) => {
 };
 
 // 保存编辑
-const saveEdit = async (record: FileEntity) => {
-  try {
-    const response = await fetch(`/api/file/update/${record.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        tag: record.tag,
-        description: record.description
-      })
-    });
-    
-    const result = await response.json();
-    if (result.code === 0) {
-      message.success('保存成功');
-      editingKey.value = 0;
-      editingField.value = '';
-      editingRecord.value = null;
-    } else {
-      message.error('保存失败: ' + result.message);
-    }
-  } catch (error) {
-    message.error('保存失败: ' + (error as Error).message);
-  }
-};
+async function saveEdit(record: FileEntityVo) {
+  await fileApiClient.updateFile(record);
+  message.success('保存成功');
+  editingKey.value = 0;
+  editingField.value = '';
+  editingRecord.value = null;
+}
 
 // 显示删除确认对话框
-const showDeleteConfirm = (record: FileEntity) => {
+function showDeleteConfirm(record: FileEntityVo) {
   Modal.confirm({
     title: '确认删除',
     content: `确定要删除文件 "${record.originFileName}" 吗？此操作不可恢复。`,
@@ -314,39 +288,34 @@ const showDeleteConfirm = (record: FileEntity) => {
     cancelText: '取消',
     onOk: () => deleteFile(record)
   });
-};
+}
+
 
 // 删除文件
-const deleteFile = async (record: FileEntity) => {
-  try {
-    const response = await fetch(`/api/file/delete/${record.id}`, {
-      method: 'DELETE'
-    });
-    
-    const result = await response.json();
-    if (result.code === 0) {
-      message.success('删除成功');
-      // 从列表中移除该文件
-      if (record.children) {
-        // 如果是子节点，从父节点中移除
-        const parent = findParent(fileListData.value, record.id);
-        if (parent && parent.children) {
-          parent.children = parent.children.filter(item => item.id !== record.id);
-        }
-      } else {
-        // 如果是根节点，直接从列表中移除
-        fileListData.value = fileListData.value.filter(item => item.id !== record.id);
-      }
-    } else {
-      message.error('删除失败: ' + result.message);
-    }
-  } catch (error) {
-    message.error('删除失败: ' + (error as Error).message);
-  }
-};
+async function deleteFile(record: FileEntityVo) {
+  await fileApiClient.deleteFiles([record])
+  await fetchFileList()
+}
+
+
+// 解压文件
+async function extractFile(record: FileEntityVo) {
+  record.childrenFiles = await fileApiClient.extract({filename: record.filename});
+  record.zipped = true
+}
+
+async function loadExtractedFiles(record: FileEntityVo) {
+  record.childrenFiles = await fileApiClient.listExtracted({filename: record.filename});
+  record.zipped = true
+}
+
+async function fetchFileList() {
+  let result = await fileApiClient.findFiles();
+  fileListData.value = result
+}
 
 // 查找父节点
-const findParent = (nodes: FileEntity[], id: number): FileEntity | null => {
+const findParent = (nodes: FileEntityVo[], id: number): FileEntityVo | null => {
   for (const node of nodes) {
     if (node.children) {
       if (node.children.some(child => child.id === id)) {
@@ -359,93 +328,9 @@ const findParent = (nodes: FileEntity[], id: number): FileEntity | null => {
     }
   }
   return null;
-};
-
-// 解压文件
-const extractFile = async (record: FileEntity) => {
-  try {
-    const response = await fetch(`/api/file/extract/${record.id}`);
-    const result = await response.json();
-    
-    if (result.code === 0) {
-      message.success('解压成功');
-      // 将解压后的文件作为子节点添加到当前记录
-      record.children = result.data;
-      record.hasChildren = result.data && result.data.length > 0;
-      
-      // 标记为已解压
-      record.tag = 'extracted';
-      
-      // 更新文件列表数据以触发界面更新
-      const index = fileListData.value.findIndex(item => item.id === record.id);
-      if (index !== -1) {
-        fileListData.value[index] = {...fileListData.value[index]};
-      }
-    } else {
-      message.error('解压失败: ' + result.message);
-    }
-  } catch (error) {
-    message.error('解压失败: ' + (error as Error).message);
-  }
-};
-
-// 加载已解压的文件
-const loadExtractedFiles = async (record: FileEntity) => {
-  try {
-    const response = await fetch(`/api/file/extracted/${record.id}`);
-    const result = await response.json();
-    
-    if (result.code === 0) {
-      // 将解压后的文件作为子节点添加到当前记录
-      record.children = result.data;
-      record.hasChildren = result.data && result.data.length > 0;
-      
-      // 更新文件列表数据以触发界面更新
-      const index = fileListData.value.findIndex(item => item.id === record.id);
-      if (index !== -1) {
-        fileListData.value[index] = {...fileListData.value[index]};
-      }
-    } else {
-      message.error('加载解压文件失败: ' + result.message);
-    }
-  } catch (error) {
-    message.error('加载解压文件失败: ' + (error as Error).message);
-  }
-};
-
-// 获取文件列表
-const fetchFileList = async () => {
-  loading.value = true;
-  try {
-    const response = await fetch('/api/file/list');
-    const result = await response.json();
-    
-    if (result.code === 0) {
-      fileListData.value = result.data;
-    } else {
-      message.error('获取文件列表失败: ' + result.message);
-    }
-  } catch (error) {
-    message.error('获取文件列表失败: ' + (error as Error).message);
-  } finally {
-    loading.value = false;
-  }
-};
-
-// 组件挂载时获取文件列表
-onMounted(() => {
-  fetchFileList();
-});
-
-// 判断是否为 ZIP 文件
-const isZipFile = (record: FileEntity): boolean => {
-  if (record.type === 'dir') return false;
-  const extension = record.originFileName.split('.').pop()?.toLowerCase();
-  return extension === 'zip';
-};
+}
 
 </script>
-
 <style scoped>
 .file-item {
   display: flex;

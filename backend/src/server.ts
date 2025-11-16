@@ -1,4 +1,4 @@
-import Fastify, {FastifyReply} from 'fastify'
+import Fastify, {FastifyInstance} from 'fastify'
 import fastifyStatic from '@fastify/static';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyWebsocket, {WebSocket} from '@fastify/websocket';
@@ -6,7 +6,9 @@ import * as path from "node:path";
 import {createLogHandler, registerLogRequestContext,} from "./log.js";
 import UserRouter from "./routes/user.router.js"
 import TestRouter from "./routes/test.router.js"
-import FileRouter from "./routes/file.router.js";
+import {fileRouter} from "./routes/file.router.js";
+import {RouterApi, SchemeParam} from "@mono/common/types.js";
+import {fileApiScheme} from "@mono/common/src/api/model/File.js";
 
 export const server = await Fastify({
     requestIdHeader: false,
@@ -63,7 +65,28 @@ server.setErrorHandler(function (error, request, reply) {
         });
     }
 });
-// todo 包扫描注入
+
+
+createRouter(server, fileApiScheme, fileRouter)
 server.register(UserRouter.router, {prefix: UserRouter.prefix})
-server.register(FileRouter.router, {prefix: FileRouter.prefix})
 server.register(TestRouter.router, {prefix: TestRouter.prefix})
+
+
+export function createRouter<T extends {
+    [key: string]: SchemeParam
+}>(server: FastifyInstance, schema: T, router: RouterApi<T>) {
+    for (let schemaKey in schema) {
+        let schemeParam = schema[schemaKey];
+        LOGGER.info(`Registering ${schemeParam.method ?? 'post'} ${schemeParam.prefix ?? ''}/${schemaKey}`)
+        server[schemeParam.method ?? 'post'](`${schemeParam.prefix ?? ''}/${schemaKey}`, async (req, res) => {
+            let result
+            try {
+                LOGGER.info(`Calling ${schemeParam.prefix ?? ''}/${schemaKey} ${JSON.stringify(req.body)}`)
+                result = await router[schemaKey](req, res)
+                return {code: 0, data: result}
+            } catch (e) {
+                return {code: -1, message: e instanceof Error ? e.message : String(e)}
+            }
+        })
+    }
+}
