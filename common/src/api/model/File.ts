@@ -21,14 +21,34 @@ export class FileEntityVo extends FileEntity {
 }
 
 
-// 3. 接口方案定义（确保 Data 和 Body 类型正确）
-export const fileApiScheme = {
-    updateFile: {},
-    findFiles: {},
-    deleteFiles: {},
-    uploadFile: {},
-    listExtracted: {},
-    extract: {},
-} as const;
+
+export class FileApi {
+
+    $prefix = '/file'
+
+    async updateFile(body: any): Promise<any> {
+        throw new Error('Not implemented')
+    }
+
+    async findFiles(body: any): Promise<any> {
+        throw new Error('Not implemented')
+    }
+
+    async deleteFiles(body: any): Promise<any> {
+        throw new Error('Not implemented')
+    }
+
+    async uploadFile(body: any): Promise<any> {
+        throw new Error('Not implemented')
+    }
+
+    async listExtracted(body: any): Promise<any> {
+        throw new Error('Not implemented')
+    }
+
+    async extract(body: any): Promise<any> {
+        throw new Error('Not implemented')
+    }
+}
 
 

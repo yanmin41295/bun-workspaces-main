@@ -245,7 +245,7 @@ function customRequest(options) {
     message.error(`${file.name} 上传失败: 网络错误`);
   };
 
-  xhr.open('POST', '/api/uploadFile');
+  xhr.open('POST', '/api/file/uploadFile');
   xhr.send(formData);
 
   // 返回一个 abort 函数，允许取消上传

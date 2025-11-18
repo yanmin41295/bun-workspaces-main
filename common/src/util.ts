@@ -139,3 +139,198 @@ export function objectToZodSchema(obj: any): ZodTypeAny {
     }
     return z.any();
 }
+
+
+/**
+ * Proxy工具函数，用于判断属性是否为类的方法名
+ */
+
+/**
+ * 判断属性是否为类的方法名
+ * @param target 目标对象
+ * @param prop 属性名
+ * @returns 如果属性是方法则返回true，否则返回false
+ */
+export function isClassMethod(target: any, prop: PropertyKey): boolean {
+    // 获取属性值
+    const descriptor = Object.getOwnPropertyDescriptor(target, prop) ||
+        Object.getOwnPropertyDescriptor(Object.getPrototypeOf(target), prop);
+
+    // 检查是否为函数
+    if (descriptor && typeof descriptor.value === 'function') {
+        return true;
+    }
+
+    // 检查原型链上的方法
+    const proto = Object.getPrototypeOf(target);
+    if (proto && proto !== Object.prototype) {
+        const protoDescriptor = Object.getOwnPropertyDescriptor(proto, prop);
+        if (protoDescriptor && typeof protoDescriptor.value === 'function') {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * 创建代理对象，在访问属性时可以判断是否为方法
+ * @param target 目标对象
+ * @param onMethodAccess 当访问方法时的回调
+ * @param onPropertyAccess 当访问普通属性时的回调
+ * @returns 代理对象
+ */
+export function createMethodAwareProxy<T extends object>(
+    target: T,
+    onMethodAccess?: (prop: PropertyKey, target: T) => void,
+    onPropertyAccess?: (prop: PropertyKey, target: T) => void
+): T {
+    return new Proxy(target, {
+        get(obj, prop, receiver) {
+            // 检查是否为方法
+            if (isClassMethod(obj, prop)) {
+                onMethodAccess?.(prop, obj);
+            } else {
+                onPropertyAccess?.(prop, obj);
+            }
+
+            // 返回原始值
+            return Reflect.get(obj, prop, receiver);
+        }
+    });
+}
+
+/**
+ * 对象方法遍历工具
+ */
+
+/**
+ * 遍历对象的所有方法
+ * @param obj 要遍历的对象
+ * @param callback 回调函数，接收方法名和方法引用作为参数
+ */
+export function forEachMethod(
+    obj: any,
+    callback: (methodName: string, method: Function, target: any) => void
+): void {
+    if (!obj) return;
+
+    // 遍历对象自身的所有属性
+    Object.getOwnPropertyNames(obj).forEach(key => {
+        const descriptor = Object.getOwnPropertyDescriptor(obj, key);
+        if (descriptor && typeof descriptor.value === 'function') {
+            callback(key, descriptor.value, obj);
+        }
+    });
+
+    // 遍历原型链上的方法
+    let proto = Object.getPrototypeOf(obj);
+    if (proto && proto !== Object.prototype) {
+        Object.getOwnPropertyNames(proto).forEach(key => {
+            const descriptor = Object.getOwnPropertyDescriptor(proto, key);
+            if (descriptor && typeof descriptor.value === 'function' && !obj.hasOwnProperty(key)) {
+                callback(key, descriptor.value, obj);
+            }
+        });
+        // proto = Object.getPrototypeOf(proto);
+    }
+}
+
+/**
+ * 获取对象的所有方法名
+ * @param obj 目标对象
+ * @returns 包含所有方法名的数组
+ */
+export function getMethodNames(obj: any): string[] {
+    const methodNames: string[] = [];
+
+    forEachMethod(obj, (methodName) => {
+        methodNames.push(methodName);
+    });
+
+    return methodNames;
+}
+
+/**
+ * 检查属性是否为方法
+ * @param obj 目标对象
+ * @param prop 属性名
+ * @returns 如果属性是方法则返回true，否则返回false
+ */
+export function isMethod(obj: any, prop: PropertyKey): boolean {
+    if (!obj || !prop) return false;
+
+    const descriptor = Object.getOwnPropertyDescriptor(obj, prop) ||
+        Object.getOwnPropertyDescriptor(Object.getPrototypeOf(obj), prop);
+
+    if (descriptor && typeof descriptor.value === 'function') {
+        return true;
+    }
+
+    return typeof obj[prop] === 'function';
+}
+
+/**
+ * 获取对象的所有方法
+ * @param obj 目标对象
+ * @returns 包含所有方法名和方法引用的对象
+ */
+export function getAllMethods(obj: any): Record<string, Function> {
+    const methods: Record<string, Function> = {};
+
+    forEachMethod(obj, (methodName, method) => {
+        methods[methodName] = method;
+    });
+
+    return methods;
+}
+
+/**
+ * 获取对象实例本身的所有方法（不包括父类方法）
+ * @param obj 目标对象
+ * @returns 包含所有自身方法名和方法引用的对象
+ */
+export function getOwnMethods(obj: any): Record<string, Function> {
+    const methods: Record<string, Function> = {};
+    if (!obj) return methods;
+    // 只遍历对象自身的属性，不包括原型链
+    Object.getOwnPropertyNames(obj).forEach(key => {
+        const descriptor = Object.getOwnPropertyDescriptor(obj, key);
+        // 检查是否是函数且是自身属性
+        if (descriptor && typeof descriptor.value === 'function') {
+            methods[key] = descriptor.value;
+        }
+    });
+
+    return methods;
+}
+
+/**
+ * 获取类实例自身的所有方法（不包括构造函数和继承的方法）
+ * @param instance 类实例对象
+ * @returns 包含所有自身方法名和方法引用的对象
+ */
+export function getInstanceOwnMethods(instance: any): Record<string, Function> {
+    const methods: Record<string, Function> = {};
+    if (!instance) return methods;
+
+    // 获取对象自身的所有属性名
+    const ownPropertyNames = Object.getOwnPropertyNames(instance);
+
+    for (const propertyName of ownPropertyNames) {
+        // 排除构造函数
+        if (propertyName === 'constructor') {
+            continue;
+        }
+
+        // 获取属性描述符
+        const descriptor = Object.getOwnPropertyDescriptor(instance, propertyName);
+
+        // 检查是否是函数
+        if (descriptor && typeof descriptor.value === 'function') {
+            methods[propertyName] = descriptor.value;
+        }
+    }
+
+    return methods;
+}

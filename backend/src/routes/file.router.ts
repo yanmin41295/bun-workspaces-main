@@ -1,15 +1,14 @@
-import {FastifyRequest} from "fastify";
+import {FastifyReply, FastifyRequest} from "fastify";
 import path from "node:path";
 import fs, {stat} from "fs/promises";
 import {createReadStream, createWriteStream} from "fs";
 import {pipeline} from "stream/promises";
 import {LOGGER} from "../server.js";
 import db from "../db/knex.js";
-import {fileApiScheme, FileEntity, FileEntityVo,} from "../../../common/src/api/model/File.ts";
+import {FileApi, FileEntity, FileEntityVo,} from "@mono/common/src/api/model/File.ts";
 import yauzl from "yauzl";
 import {MultipartFile} from "@fastify/multipart";
 import {FileUtil} from "../util/FileUtil.js";
-import {RouterApi} from "../../../common/types.js";
 
 const uploadDir = path.join(process.cwd(), 'public', 'uploads');
 try {
@@ -19,8 +18,7 @@ try {
 }
 
 
-export class FileRouterHandler implements RouterApi<typeof fileApiScheme> {
-
+export class FileRouterHandler extends FileApi {
     async uploadFile(request: FastifyRequest<any>) {
         const parts = request.parts();
         const uploadedFiles: FileEntity[] = [];
@@ -70,7 +68,7 @@ export class FileRouterHandler implements RouterApi<typeof fileApiScheme> {
         return uploadedFiles
     }
 
-    async downloadFile(request: FastifyRequest<any>, reply) {
+    async downloadFile(request: FastifyRequest<any>, reply: FastifyReply) {
         try {
             const {filename} = request.params as { filename: string };
 

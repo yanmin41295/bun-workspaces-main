@@ -22,7 +22,7 @@ export namespace FileUtil {
             }
             return true;
         } catch (error) {
-            LOGGER.error(`Failed to remove directory '${dstPath}': ${error instanceof Error ? error.message : String(error)}`);
+            LOGGER.error(`Failed to remove directory '${dstPath}': ${(error as Error).stack}`);
         }
         return false
     }
@@ -36,7 +36,7 @@ export namespace FileUtil {
         try {
             await fs.access(path);
             return true;
-        } catch (e: Error) {
+        } catch (e) {
             return false;
         }
     }
@@ -235,6 +235,4 @@ export namespace FileUtil {
     export function joinPath(...paths: string[]): string {
         return path.join(...paths);
     }
-
-
 }

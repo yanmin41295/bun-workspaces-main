@@ -1,4 +1,4 @@
-import Fastify, {FastifyInstance} from 'fastify'
+import Fastify, {FastifyInstance, FastifyRequest} from 'fastify'
 import fastifyStatic from '@fastify/static';
 import fastifyMultipart from '@fastify/multipart';
 import fastifyWebsocket, {WebSocket} from '@fastify/websocket';
@@ -8,7 +8,7 @@ import UserRouter from "./routes/user.router.js"
 import TestRouter from "./routes/test.router.js"
 import {fileRouter} from "./routes/file.router.js";
 import {RouterApi, SchemeParam} from "@mono/common/types.js";
-import {fileApiScheme} from "@mono/common/src/api/model/File.js";
+import {forEachMethod, getInstanceOwnMethods, getOwnMethods} from "@mono/common/src/util.js";
 
 export const server = await Fastify({
     requestIdHeader: false,
@@ -67,26 +67,29 @@ server.setErrorHandler(function (error, request, reply) {
 });
 
 
-createRouter(server, fileApiScheme, fileRouter)
+createRouter(server, fileRouter)
 server.register(UserRouter.router, {prefix: UserRouter.prefix})
 server.register(TestRouter.router, {prefix: TestRouter.prefix})
 
 
-export function createRouter<T extends {
-    [key: string]: SchemeParam
-}>(server: FastifyInstance, schema: T, router: RouterApi<T>) {
-    for (let schemaKey in schema) {
-        let schemeParam = schema[schemaKey];
-        LOGGER.info(`Registering ${schemeParam.method ?? 'post'} ${schemeParam.prefix ?? ''}/${schemaKey}`)
-        server[schemeParam.method ?? 'post'](`${schemeParam.prefix ?? ''}/${schemaKey}`, async (req, res) => {
-            let result
+export function createRouter<T extends object>(server: FastifyInstance, routerInstance: T & { $prefix?: string }) {
+    getInstanceOwnMethods(routerInstance)
+    forEachMethod(routerInstance, (methodName, method) => {
+        LOGGER.info(`Registering ${routerInstance.$prefix ?? ''}/${methodName}`)
+        if (methodName==='constructor') {
+            return
+        }
+        server.post(`${routerInstance.$prefix ?? ''}/${methodName}`, async (req, res) => {
+            let result: any
             try {
-                LOGGER.info(`Calling ${schemeParam.prefix ?? ''}/${schemaKey} ${JSON.stringify(req.body)}`)
-                result = await router[schemaKey](req, res)
+                LOGGER.info(`Calling ${routerInstance.$prefix ?? ''}/${methodName} ${JSON.stringify(req.body)}`)
+                result = await routerInstance[methodName](req, res)
                 return {code: 0, data: result}
             } catch (e) {
                 return {code: -1, message: e instanceof Error ? e.message : String(e)}
             }
         })
-    }
+    })
 }
+
+

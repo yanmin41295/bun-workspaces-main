@@ -31,6 +31,16 @@ export async function execute(cmd: string): Promise<string> {
     })
 }
 
+export async function execStream(cmd: string, callback: (data: string) => void) {
+    const child = spawn(cmd, {shell: true});
+    child.stdout.on('data', (data) => {
+        callback(data.toString());
+    });
+    child.stderr.on('error', (data) => {
+        callback(data.toString());
+    });
+}
+
 export function runAll(command: string, args: string[]) {
     return spawn(command, args);
 }

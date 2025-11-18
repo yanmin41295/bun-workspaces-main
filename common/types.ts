@@ -21,3 +21,5 @@ export type RouterApi<T extends { [key: string]: SchemeParam }> = {
 export type ApiMethod<T extends { [key: string]: SchemeParam }> = {
     [K in keyof T]: <B = any, R = any>(body: B) => Promise<R>;
 };
+
+
