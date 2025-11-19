@@ -184,7 +184,7 @@ export class FileRouterHandler extends FileApi {
 export const fileRouter = new FileRouterHandler();
 
 // 生成带时间戳的文件名
-const generateTimestampFilename = (originalFilename: string): string => {
+function generateTimestampFilename(originalFilename: string): string {
     const now = new Date();
     const timestamp = `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}-${now.getMinutes().toString().padStart(2, '0')}-${now.getSeconds().toString().padStart(2, '0')}`;
 
@@ -195,29 +195,29 @@ const generateTimestampFilename = (originalFilename: string): string => {
     } else {
         return `upload_${timestamp}.dat`;
     }
-};
+}
 
 // 递归创建目录
-const ensureDir = async (dirPath: string) => {
+async function ensureDir(dirPath: string) {
     try {
         await fs.access(dirPath);
     } catch {
         await fs.mkdir(dirPath, {recursive: true});
     }
-};
+}
 
 // 获取文件的扩展名
-const getFileExtension = (filename: string): string => {
+function getFileExtension(filename: string): string {
     const parts = filename.split('.');
     if (parts.length > 1) {
         return parts[parts.length - 1].toLowerCase();
     }
     return '';
-};
+}
 
 
 // 将 yauzl 的回调 API 转换为 Promise API
-const openZip = (path: string): Promise<yauzl.ZipFile> => {
+function openZip(path: string): Promise<yauzl.ZipFile> {
     return new Promise((resolve, reject) => {
         yauzl.open(path, {lazyEntries: true, autoClose: false}, (err, zipfile) => {
             if (err) {
@@ -227,7 +227,7 @@ const openZip = (path: string): Promise<yauzl.ZipFile> => {
             }
         });
     });
-};
+}
 
 async function getUploadFilePath(filename: string) {
     return path.join(uploadDir, filename)
@@ -250,7 +250,7 @@ function getUnzipPath(filename: string) {
     return path.join(uploadDir, `${nameWithoutExt}_unzip`)
 }
 
-const readZipEntries = (zipfile: yauzl.ZipFile): Promise<yauzl.Entry[]> => {
+function readZipEntries(zipfile: yauzl.ZipFile): Promise<yauzl.Entry[]> {
     return new Promise((resolve, reject) => {
         const entries: yauzl.Entry[] = [];
 
@@ -272,9 +272,9 @@ const readZipEntries = (zipfile: yauzl.ZipFile): Promise<yauzl.Entry[]> => {
 
         zipfile.readEntry();
     });
-};
+}
 
-const extractEntryTo = (zipfile: yauzl.ZipFile, entry: yauzl.Entry, extractPath: string): Promise<void> => {
+function extractEntryTo(zipfile: yauzl.ZipFile, entry: yauzl.Entry, extractPath: string): Promise<void> {
     return new Promise((resolve, reject) => {
         // 如果是目录，直接创建目录
         if (entry.fileName.endsWith("/")) {
@@ -328,5 +328,5 @@ const extractEntryTo = (zipfile: yauzl.ZipFile, entry: yauzl.Entry, extractPath:
                 .catch(reject);
         });
     });
-};
+}
 
