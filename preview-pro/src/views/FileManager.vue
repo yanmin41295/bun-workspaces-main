@@ -28,9 +28,10 @@
         </template>
       </a-upload>
     </a-card>
-
+    <a-progress :percent="progress" status="active"/>
     <a-card title="文件列表" style="margin-top: 16px;">
       <a-button type="primary" @click="fetchFileList" style="margin-bottom: 16px;">刷新列表</a-button>
+      <a-button type="primary" @click="startTask" style="margin-bottom: 16px;">startTask</a-button>
       <a-table
           :data-source="fileListData"
           :columns="columns"
@@ -99,6 +100,7 @@
         </template>
       </a-table>
     </a-card>
+
   </PageContainer>
 </template>
 
@@ -110,18 +112,38 @@ import {PageContainer} from '@ant-design-vue/pro-layout';
 import {UploadOutlined} from '@ant-design/icons-vue';
 import {formatDate, formatFileSize} from "@mono/common/src/util";
 import {FileEntityVo} from "@mono/common/src/api/model/File";
-import {fileApiClient} from "@/api/api.base";
-
+import {fileApiClient, taskSocket} from "@/api/api.base";
+import {Task} from "@mono/common/src/api/model/task";
+import axios from 'axios'
 const fileList = ref<UploadFile[]>([]);
 const fileListData = ref<FileEntityVo[]>([]);
 const loading = ref<boolean>(false);
 const editingKey = ref<number>(0);
 const editingField = ref<string>('');
 const editingRecord = ref<FileEntityVo | null>(null);
+const progress = ref(0)
+const pingTask = new Task()
+pingTask.name = 'ping'
+pingTask.id = 1234
 // 组件挂载时获取文件列表
 onMounted(() => {
   fetchFileList();
+
 });
+
+onBeforeUnmount(() => {
+  taskSocket.endTask(pingTask)
+})
+
+function startTask() {
+  axios.post('/api/task', pingTask)
+  taskSocket.onTask(pingTask, (task: Task) => {
+    progress.value = task.progress
+    if (task.status === 'completed') {
+      taskSocket.endTask(task)
+    }
+  })
+}
 
 // 表格列定义
 const columns = [

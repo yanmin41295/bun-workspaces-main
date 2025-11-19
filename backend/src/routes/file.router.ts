@@ -9,6 +9,7 @@ import {FileApi, FileEntity, FileEntityVo,} from "@mono/common/src/api/model/Fil
 import yauzl from "yauzl";
 import {MultipartFile} from "@fastify/multipart";
 import {FileUtil} from "../util/FileUtil.js";
+import {Task} from "@mono/common/src/api/model/task.js";
 
 const uploadDir = path.join(process.cwd(), 'public', 'uploads');
 try {
@@ -29,15 +30,11 @@ export class FileRouterHandler extends FileApi {
                 // 生成带时间戳的文件名
                 const filename = generateTimestampFilename(part.filename || '');
                 const filepath = path.join(uploadDir, filename);
-
                 console.log(`Processing file: ${part.filename}, saving as: ${filename}`);
-
                 // 保存文件，使用 pipeline 处理流
                 await pipeline(part.file, createWriteStream(filepath));
-
                 // 获取文件信息
                 const fileStats = await stat(filepath);
-
                 // 创建文件实体
                 const fileEntity = new FileEntity();
                 fileEntity.originFileName = part.filename || '';
@@ -49,19 +46,8 @@ export class FileRouterHandler extends FileApi {
                 fileEntity.description = '';
                 fileEntity.filepath = filepath;
                 fileEntity.filename = filename;
-
                 // 保存到数据库
-                await db('files').insert({
-                    originFileName: fileEntity.originFileName,
-                    size: fileEntity.size,
-                    md5: fileEntity.md5,
-                    uploadTime: fileEntity.uploadTime,
-                    type: fileEntity.type,
-                    tag: fileEntity.tag,
-                    description: fileEntity.description,
-                    filepath: fileEntity.filepath,
-                    filename: fileEntity.filename
-                });
+                await db('files').insert(fileEntity);
                 uploadedFiles.push(fileEntity);
             }
         }
@@ -71,21 +57,17 @@ export class FileRouterHandler extends FileApi {
     async downloadFile(request: FastifyRequest<any>, reply: FastifyReply) {
         try {
             const {filename} = request.params as { filename: string };
-
             // 验证文件名是否安全，防止路径遍历攻击
             if (!filename || filename.includes('../') || filename.includes('..\\')) {
                 return reply.status(400).send({error: 'Invalid filename'});
             }
-
             const filepath = path.join(uploadDir, filename);
-
             // 检查文件是否存在
             try {
                 await fs.access(filepath);
             } catch {
                 return reply.status(404).send({error: 'File not found'});
             }
-
             // 设置响应头，触发浏览器下载
             reply.header('Content-Type', 'application/octet-stream');
             reply.header('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
