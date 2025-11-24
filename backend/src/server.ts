@@ -36,13 +36,13 @@ export const socketRouter = new SocketRouter(server);
 await socketRouter.init();
 
 // 全局异常处理器
-server.setErrorHandler(function (error, request, reply) {
+server.setErrorHandler<any>(function (error, request, reply) {
     // 记录错误日志
     LOGGER.error('Unhandled error:', error);
     // 检查错误类型并返回相应的响应
     if (error.statusCode) {
         // 如果错误有状态码，使用该状态码
-        reply.status(error.statusCode).send({
+        reply.status(error?.statusCode).send({
             code: -1,
             message: error.message || 'Internal Server Error',
             ...(process.env.NODE_ENV === 'development' && {stack: error.stack})

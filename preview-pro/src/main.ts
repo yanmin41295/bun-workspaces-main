@@ -9,15 +9,25 @@ import App from './App.vue';
 import STable from '@surely-vue/table';
 import '@surely-vue/table/dist/index.less';
 import {loader} from '@guolao/vue-monaco-editor'
-
+import { createTerminal } from 'vue-web-terminal'
+import { createLogger } from 'vue-logger-plugin'
 loader.config({
     paths: {
         vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs',
     },
+})
+
+export const logger = createLogger({
+    enabled: true,
+    level: 'debug',
+    callerInfo: true,
+    consoleEnabled: true,
 })
 const app = createApp(App);
 app.use(router);
 app.use(ConfigProvider);
 app.use(ProLayout).use(PageContainer);
 app.use(STable);
+app.use(logger)
+app.use(createTerminal())
 app.mount('#app');

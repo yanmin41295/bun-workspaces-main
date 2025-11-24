@@ -2,7 +2,6 @@ import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router';
 import BasicLayout from '../layouts/BasicLayout.vue';
 import BlankLayout from '../layouts/BlankLayout.vue';
 import WelcomePage from '../views/Page1.vue';
-import FileManager from '../views/FileManager.vue';
 
 
 // only githubpages preview site used, if use template please remove this check
@@ -30,8 +29,31 @@ export default createRouter({
                     name: 'admins',
                     meta: {title: '管理页', icon: 'icon-tuijian', flat: true},
                     component: BlankLayout,
-                    redirect: () => ({name: 'page1'}),
+                    redirect: () => ({name: 'ViewTable'}),
                     children: [
+                        {
+                            path: 'ViewTable',
+                            name: 'ViewTable',
+                            meta: {title: 'ViewTable'},
+                            component: () => import('../components/table/ViewTable.vue'),
+                        },
+                        {
+                            path: 'VueWebTerminal',
+                            name: 'VueWebTerminal',
+                            meta: {title: '终端'},
+                            component: () => import('../views/VueWebTerminal.vue'),
+                        }, {
+                            path: 'TableConfigurator',
+                            name: 'TableConfigurator',
+                            meta: {title: 'TableConfigurator'},
+                            component: () => import('../components/TableConfigurator.vue'),
+                        },
+                        {
+                            path: 'terminal',
+                            name: 'terminal',
+                            meta: {title: '终端'},
+                            component: () => import('../views/TerminalView.vue'),
+                        },
                         {
                             path: 'file-manager',
                             name: 'fileManager',
@@ -67,5 +89,6 @@ export default createRouter({
                 },
             ],
         },
-    ],
+    ]
+
 });

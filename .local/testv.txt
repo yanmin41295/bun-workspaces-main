@@ -1,0 +1,20 @@
+    ot recognized as an internal or external command,
+    operable program or batch file.
+    -
+    /vue-web-terminal > dir
+     Volume in drive D has no label.
+     Volume Serial Number is B2A3-4525
+
+     Directory of D:\codespace\bun-workspaces-main\backend
+
+    2025/11/23  13:06    <DIR>          .
+    2025/11/23  11:19    <DIR>          ..
+    2025/01/11  20:45               133 bunfig.toml
+    2025/11/19  20:34    <DIR>          database
+    2025/11/16  14:36            12,288 db.sqlite
+    2025/11/16  14:42               302 env.json5
+    2025/11/23  13:06    <DIR>          node_modules
+    2025/11/23  11:52               443 package.json
+    2025/11/09  16:34    <DIR>          public
+    2025/11/23  00:16    <DIR>          src
+    2025/11/12  19:31    <DIR>          test

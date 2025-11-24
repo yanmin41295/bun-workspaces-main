@@ -25,7 +25,9 @@
     "keep-alive-vue3": "^1.2.4",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "vue3-excel-editor": "^1.0.60"
+    "vue3-excel-editor": "^1.0.60",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.15",

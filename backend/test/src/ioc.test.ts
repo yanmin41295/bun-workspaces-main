@@ -1,12 +1,23 @@
 import {test} from "vitest";
-import {Container} from "@mono/common/src/api/container.js";
+import {spawn} from "child_process";
 
-class IocContainer extends Container {
-
-}
 test('service ioc', async () => {
-    const container = new IocContainer();
-    await container.load('./src/controller');
-    let result = await container.callLambda('user-findUser', {userId: 1})
-    console.log(result)
+
+    const isWindows = process.platform === 'win32';
+    const command = isWindows ? 'cmd' : 'ls';
+    const args = isWindows ? ['/c', 'dir'] : ['-la'];
+    const shellProcess = spawn(command, args);
+    shellProcess.stdout.on('data', (data: Buffer) => {
+        console.log(data.toString());
+    });
+    shellProcess.stderr.on('data', (data: Buffer) => {
+        console.log(data.toString());
+    });
+    shellProcess.on('close', (code: number) => {
+        console.log(`Process exited with code ${code}`);
+    });
+    shellProcess.on('error', (error: Error) => {
+        console.log(`Process error: ${error.message}`);
+    });
+    await  new Promise(resolve => setTimeout(resolve, 10000))
 })

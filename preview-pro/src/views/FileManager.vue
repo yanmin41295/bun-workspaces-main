@@ -115,6 +115,7 @@ import {FileEntityVo} from "@mono/common/src/api/model/File";
 import {fileApiClient, taskSocket} from "@/api/api.base";
 import {Task} from "@mono/common/src/api/model/task";
 import axios from 'axios'
+
 const fileList = ref<UploadFile[]>([]);
 const fileListData = ref<FileEntityVo[]>([]);
 const loading = ref<boolean>(false);
@@ -131,17 +132,10 @@ onMounted(() => {
 
 });
 
-onBeforeUnmount(() => {
-  taskSocket.endTask(pingTask)
-})
 
 function startTask() {
-  axios.post('/api/task', pingTask)
-  taskSocket.onTask(pingTask, (task: Task) => {
+  taskSocket.startTask(pingTask, (task: Task) => {
     progress.value = task.progress
-    if (task.status === 'completed') {
-      taskSocket.endTask(task)
-    }
   })
 }
 
