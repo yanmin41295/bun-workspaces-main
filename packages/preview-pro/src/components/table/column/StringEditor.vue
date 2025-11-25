@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import {reactive} from 'vue';
-import {logger} from "@/main";
-import CommonEditor from './CommonEditor.vue';
+import {reactive, useTemplateRef} from 'vue';
+import {onClickOutside} from "@vueuse/core";
 
 const emit = defineEmits({
   saveData(value: any) {
@@ -19,20 +18,24 @@ const props = defineProps<{
     editable?: boolean;  // 是否可编辑
   };
 }>();
-logger.info(props)
 
 const state = reactive({
   value: props.value
 })
-</script>
 
+const target = useTemplateRef<HTMLElement>('target');
+onClickOutside(target, event => {
+  saveData();
+});
+
+function saveData() {
+  emit('saveData', state.value);
+}
+</script>
 <template>
-  <CommonEditor :value="props.value" @saveData="()=>emit('saveData', state.value)" :text="props.text"
-                :column="props.column" :index="props.index" :record="props.record">
-    <template #default="{   saveData }">
-      <a-input v-model:value="state.value" @keyup.enter="saveData"/>
-    </template>
-  </CommonEditor>
+  <SaveEditor @saveData="saveData">
+    <a-input v-model:value="state.value" @keyup.enter="saveData"/>
+  </SaveEditor>
 </template>
 
 <style scoped>

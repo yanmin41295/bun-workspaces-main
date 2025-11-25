@@ -35,7 +35,7 @@ const state = reactive({
       name: 'username',
       dataIndex: 'username',
       viewTemplate: 'string',
-      editTemplate: 'StringCommonEditor',
+      editTemplate: 'StringEditor',
       editable: true,
       ellipsis: true,// 列宽自适应
       initValue: '',
@@ -89,21 +89,50 @@ const state = reactive({
       name: 'jobs',
       dataIndex: 'jobs',
       viewTemplate: 'string',
-      editTemplate: 'StringEditor',
+      editTemplate: 'SelectEditor',
       editable: true,
       initValue: '',
+      options: [
+        {label: '前端开发', value: '前端开发'},
+        {label: '后端开发', value: '后端开发'}
+      ],
+    }, {
+      title: '书籍',
+      name: 'books',
+      dataIndex: 'books',
+      viewTemplate: 'string',
+      editTemplate: 'SelectEditor',
+      editable: true,
+      initValue: '',
+      options: [
+        {label: 'html', value: 'html'},
+        {label: 'css', value: 'css'},
+        {label: 'js', value: 'js'},
+      ],
+      mode: 'multiple',
+    }, {
+      title: '是否启用',
+      name: 'isEnabled',
+      dataIndex: 'isEnabled',
+      viewTemplate: 'CommonRead',
+      editTemplate: 'SwitchEditor',
+      editable: true,
+      initValue: false,
     }
   ] as TableHeader[],
-  dataSource: [
-    {
-      id: 1,
-      username: '张三',
-      age: 25,
-      birthday: '2000-01-01',
-      gender: 'male',
-      jobs: '前端开发',
-    }
-  ] as any[],
+  dataSource:
+      [
+        {
+          id: 1,
+          username: '张三',
+          age: 25,
+          birthday: '2000-01-01',
+          gender: 'male',
+          jobs: '前端开发',
+          isEnabled: true,
+          books: ['html', 'css']
+        }
+      ] as any[],
 })
 
 </script>

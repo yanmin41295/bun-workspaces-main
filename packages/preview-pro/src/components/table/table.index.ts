@@ -10,5 +10,6 @@ export const ReadComponentMap: Record<string, any> = {
 export const EditComponentMap: Record<string, any> = {
     StringEditor: defineAsyncComponent(() => import('./column/StringEditor.vue')),
     DateEditor: defineAsyncComponent(() => import('./column/DateEditor.vue')),
-    StringCommonEditor: StringCommonEditor,
+    SwitchEditor:defineAsyncComponent(() => import('./column/SwitchEditor.vue')),
+    SelectEditor: defineAsyncComponent(() => import('./column/SelectEditor.vue')),
 }

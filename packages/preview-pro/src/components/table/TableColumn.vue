@@ -18,6 +18,7 @@ const state = reactive({
 
 
 function saveData(value: any) {
+  console.log('saveData', value)
   emit('saveData', value);
   state.mode = 'read';
 }
