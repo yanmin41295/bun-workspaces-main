@@ -334,3 +334,9 @@ export function getInstanceOwnMethods(instance: any): Record<string, Function> {
 
     return methods;
 }
+
+/**
+ * 条件类型：根据布尔值选择不同类型的工具类型
+ * 当布尔值为 true 时，类型为 T；当布尔值为 false 时，类型为 F
+ */
+export type If<Condition extends boolean, T, F> = Condition extends true ? T : F;

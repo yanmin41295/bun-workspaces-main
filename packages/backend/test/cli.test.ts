@@ -1,5 +1,5 @@
 import {describe, it, expect, vi} from 'vitest';
-import {program} from "../src/cli";
+import {program} from "../src/cli/command";
 
 
 /**
@@ -12,6 +12,7 @@ describe('CLI Program with Arguments', () => {
 
 
     it('should handle command with arguments', () => {
+
         // 模拟console.log来捕获输出
         const mockLog = vi.spyOn(console, 'log').mockImplementation(() => {
         });

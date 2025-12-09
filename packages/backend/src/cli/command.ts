@@ -1,4 +1,5 @@
 import {Command} from 'commander';
+import {exec, spawn} from "child_process";
 
 export const program = new Command('va')
 program.version('0.1.0')
@@ -36,4 +37,18 @@ program.version('0.1.0')
                 console.log('password:', password);
             })
     )
+
+
+
+export function execAsync(command: string){
+    return new Promise<string>((resolve, reject) => {
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(stdout);
+            }
+        });
+    });
+}
 
