@@ -1,6 +1,6 @@
 import {FastifyInstance} from "fastify";
 import fastifyWebsocket, {WebSocket} from "@fastify/websocket";
-import {Task} from "@mono/common/src/api/model/task.js";
+import {Task} from "@mono/common/src/api/model/task.ts";
 import {exec, spawn} from "child_process";
 import {LOGGER} from "../server.ts";
 

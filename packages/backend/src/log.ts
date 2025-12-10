@@ -1,5 +1,5 @@
 import fs from "fs";
-import ProgramEnv from "./env.js";
+import ProgramEnv from "./env.ts";
 import * as path from "node:path";
 import pino from "pino";
 import {format} from "date-fns";

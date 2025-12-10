@@ -4,7 +4,7 @@
 import * as fs from 'fs/promises';
 import * as path from 'path';
 import {Stats} from "node:fs";
-import {LOGGER} from "../server.js";
+import {LOGGER} from "../server.ts";
 
 
 export namespace FileUtil {

@@ -2,13 +2,12 @@ import Fastify, {FastifyInstance} from 'fastify'
 import fastifyStatic from '@fastify/static';
 import fastifyMultipart from '@fastify/multipart';
 import * as path from "node:path";
-import {createLogHandler, registerLogRequestContext,} from "./log.js";
-import UserRouter from "./routes/user.router.js"
-import TestRouter from "./routes/test.router.js"
-import {fileRouter} from "./routes/file.router.js";
-import {forEachMethod, getInstanceOwnMethods} from "@mono/common/src/util.js";
-import {SocketRouter,} from "./routes/socket.router.js";
+import {createLogHandler, registerLogRequestContext,} from "./log.ts";
+import {SocketRouter,} from "./routes/socket.router.ts";
+import {Container} from "./container.ts";
 
+const container = new Container();
+await container.load('./controller');
 export const server = await Fastify({
     requestIdHeader: false,
     genReqId: function (req) {
@@ -58,29 +57,15 @@ server.setErrorHandler<any>(function (error, request, reply) {
 });
 
 
-createRouter(server, fileRouter)
-server.register(UserRouter.router, {prefix: UserRouter.prefix})
-server.register(TestRouter.router, {prefix: TestRouter.prefix})
-
-
-export function createRouter<T extends object>(server: FastifyInstance, routerInstance: T & { $prefix?: string }) {
-    getInstanceOwnMethods(routerInstance)
-    forEachMethod(routerInstance, (methodName, method) => {
-        LOGGER.info(`Registering ${routerInstance.$prefix ?? ''}/${methodName}`)
-        if (methodName === 'constructor') {
-            return
-        }
-        server.post(`${routerInstance.$prefix ?? ''}/${methodName}`, async (req, res) => {
-            let result: any
-            try {
-                LOGGER.info(`Calling ${routerInstance.$prefix ?? ''}/${methodName} ${JSON.stringify(req.body)}`)
-                result = await routerInstance[methodName](req, res)
-                return {code: 0, data: result}
-            } catch (e) {
-                return {code: -1, message: e instanceof Error ? e.message : String(e)}
-            }
+function registerController(server: FastifyInstance) {
+    container.lambdaMap.forEach(([lambda, instance, methodName], lambdaPath) => {
+        LOGGER.info(`Registering lambda: ${lambdaPath}`)
+        server.post(`/${lambdaPath.split('-').join('/')}`, async (req, res) => {
+            return await lambda.call(instance, req.body)
         })
     })
 }
+
+registerController(server)
 
 

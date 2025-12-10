@@ -1,7 +1,7 @@
 import knex from 'knex';
-import ProgramEnv from "../env.js";
+import ProgramEnv from "../env.ts";
 
-const db = knex({
+const KnexClient = knex({
     client: 'sqlite3',
     connection: {
         filename: `${ProgramEnv.database.url}`
@@ -11,9 +11,9 @@ const db = knex({
 
 // 创建文件表
 const createFilesTable = async () => {
-    const exists = await db.schema.hasTable('files');
+    const exists = await KnexClient.schema.hasTable('files');
     if (!exists) {
-        await db.schema.createTable('files', (table) => {
+        await KnexClient.schema.createTable('files', (table) => {
             table.increments('id').primary();
             table.string('originFileName').notNullable();
             table.integer('size').notNullable();
@@ -34,4 +34,4 @@ createFilesTable().catch(err => {
     console.error('Error creating files table:', err);
 });
 
-export default db;
+export default KnexClient;

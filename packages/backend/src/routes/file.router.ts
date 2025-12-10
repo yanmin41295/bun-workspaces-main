@@ -3,13 +3,12 @@ import path from "node:path";
 import fs, {stat} from "fs/promises";
 import {createReadStream, createWriteStream} from "fs";
 import {pipeline} from "stream/promises";
-import {LOGGER} from "../server.js";
-import db from "../db/knex.js";
+import {LOGGER} from "../server.ts";
+import KnexClient from "../db/knex.ts";
 import {FileApi, FileEntity, FileEntityVo,} from "@mono/common/src/api/model/File.ts";
 import yauzl from "yauzl";
 import {MultipartFile} from "@fastify/multipart";
-import {FileUtil} from "../util/FileUtil.js";
-import {Task} from "@mono/common/src/api/model/task.js";
+import {FileUtil} from "../util/FileUtil.ts";
 
 const uploadDir = path.join(process.cwd(), 'public', 'uploads');
 try {
@@ -47,7 +46,7 @@ export class FileRouterHandler extends FileApi {
                 fileEntity.filepath = filepath;
                 fileEntity.filename = filename;
                 // 保存到数据库
-                await db('files').insert(fileEntity);
+                await KnexClient('files').insert(fileEntity);
                 uploadedFiles.push(fileEntity);
             }
         }
@@ -112,7 +111,7 @@ export class FileRouterHandler extends FileApi {
     }
 
     async findFiles() {
-        const files = await db('files').select<FileEntity[]>('*');
+        const files = await KnexClient('files').select<FileEntity[]>('*');
         // 检查每个 ZIP 文件是否有对应的解压目录
         const fileList: FileEntityVo[] = [];
         for (const file of files) {
@@ -136,13 +135,13 @@ export class FileRouterHandler extends FileApi {
             if (unzipDir) {
                 await FileUtil.removeFileOrDir(unzipDir);
             }
-            await db('files').where({filename: fileInfo.filename}).del();
+            await KnexClient('files').where({filename: fileInfo.filename}).del();
         }
     }
 
     async updateFile(request: FastifyRequest<any>) {
         const {id, tag, description} = request.body as { id: number, tag?: string, description?: string };
-        const files = await db('files').where({id: id}).select<FileEntity[]>('*');
+        const files = await KnexClient('files').where({id: id}).select<FileEntity[]>('*');
         if (files.length === 0) {
             return
         }
@@ -159,7 +158,7 @@ export class FileRouterHandler extends FileApi {
             return
         }
         // 更新数据库中的记录
-        await db('files').where({id: id}).update(updateData);
+        await KnexClient('files').where({id: id}).update(updateData);
     }
 }
 

@@ -1,4 +1,4 @@
-import {getFilePath} from "./util.js";
+import {getFilePath} from "./util.ts";
 import fs from "fs";
 import JSON5 from 'json5'
 

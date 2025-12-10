@@ -1,5 +1,4 @@
 import {z, ZodString, ZodNumber, ZodBoolean, ZodObject, ZodArray, ZodDate, ZodTypeAny} from "zod";
-import {E} from "vitest/dist/chunks/reporters.d.CqBhtcTq.js";
 
 function parseStr(input: string) {
     try {
